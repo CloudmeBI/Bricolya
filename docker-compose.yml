@@ -1,0 +1,61 @@
+version: '3'
+networks: 
+  bricolya:
+
+services:
+  bricolya_nginx:
+    image: nginx:alpine
+    container_name: bricolya_nginx
+    ports: 
+      - "80:80"
+    volumes:
+      - ./:/var/www/html
+      - ./default.conf:/etc/nginx/conf.d/default.conf
+    depends_on: 
+      - bricolya_php
+      - bricolya_mysql
+    networks: 
+      - bricolya
+  
+  bricolya_mysql:
+    image: mysql:5.7.22
+    container_name: bricolya_mysql
+    restart: unless-stopped
+    tty: true
+    ports: 
+      - "3306:3306"
+    networks:
+      - bricolya
+    environment: 
+      MYSQL_DATABASE: urvfepvzma
+      MYSQL_USER: urvfepvzma
+      MYSQL_PASSWORD: AEH3vszc3z
+      MYSQL_ROOT_PASSWORD: secret
+      SERVICE_TAGS: dev
+      SERVICE_NAME: mysql
+
+  bricolya_php:
+    build: ./.docker-images/php
+    container_name: bricolya_php
+    volumes: 
+      - ./:/var/www/html
+    ports:
+      - "9000:9000"
+    networks: 
+      - bricolya
+      
+  # phpmyadmin:
+  #   image: phpmyadmin/phpmyadmin
+  #   container_name: eassessme_phpmyadmin
+  #   restart: always
+  #   ports: 
+  #     - "8080:80"
+  #   networks:
+  #     - eassessme_net
+  #   environment: 
+  #     PMA_ARBITRARY: 1
+  #     # PMA_HOST: eassessme_mysql
+  #     # PMA_USER: homestead
+  #     # PMA_PASSWORD: secret
+  #   depends_on: 
+  #     - mysql

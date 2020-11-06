@@ -1,0 +1,83 @@
+@media (max-width: 365px){
+    .logo{
+        text-align: center !important;
+    }
+    #header .logo_line .searchSec .wishlistCompare {
+         width: 50%;
+         padding: 25px 10px 0 0;
+         margin-right: 10px;
+    }
+}
+@media (max-width: 767px){
+    #categoriesSidebar ul.heading{
+        height: 200px;
+        overflow: hidden;
+        overflow-y: scroll;
+    }
+
+    #categoriesSidebar ul.heading::-webkit-scrollbar {
+        width: 5px;
+    }
+
+    #categoriesSidebar ul.heading::-webkit-scrollbar-track {
+        background: #fcee27;
+    }
+
+    #categoriesSidebar ul.heading::-webkit-scrollbar-thumb {
+        background: #333;
+    }
+
+    #categoriesSidebar ul.heading::-webkit-scrollbar-thumb:hover {
+        background: #6b6363;
+    }
+    #header .responsive-header{
+        margin-top: 107px;
+    }
+    #header .fleft.searchForm{
+        width: 80% !important;
+        float:right !important;
+    }
+    #testimonialTabs1, #promotion{
+        background-repeat: no-repeat;
+        background-size: auto;
+        background-position: center center;
+    }
+
+}
+
+@media (min-width: 366px) and (max-width: 767px){
+    .logo{
+        text-align: left !important;
+    }
+    #header .logo_line .searchSec .wishlistCompare {
+        position: absolute;
+        top: -97px;
+        right: 55px;
+    }
+}
+
+.floating-wpp{
+    z-index:99999;
+    bottom: 150px !important;
+}
+.floating-wpp .floating-wpp-button{
+    width: 55px !important;
+    height: 55px !important;
+    background-color:unset !important;
+    right: 7px !important;
+}
+#testimonialTabs1, #promotion{
+     background-size: contain;
+}
+.contentRowPad .downbut{
+    top: 60% !important;
+}
+#videoPage .card ul{
+    display: table;
+}
+.modal-body .btn.btn-black_hover_yellow{
+    height: unset !important;
+}
+.product .imgHov img{
+    height: 175px !important;
+}

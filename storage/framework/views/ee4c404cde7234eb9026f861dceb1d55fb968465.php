@@ -1,0 +1,1 @@
+<p>Hi dear admin : <?php echo e($data['name']); ?></p><?php /**PATH /home/clients/0beb833ad67537cf87e47f391f573b41/web/resources/views/emails/welcome-admin.blade.php ENDPATH**/ ?>
