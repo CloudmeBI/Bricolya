@@ -2,25 +2,24 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use App\Http\Controllers\OTPVerificationController;
-use App\Http\Controllers\ClubPointController;
-use App\Http\Controllers\AffiliateController;
-use App\Order;
-use App\Product;
-use App\Color;
-use App\OrderDetail;
-use App\CouponUsage;
-use App\OtpConfiguration;
-use App\User;
 use App\BusinessSetting;
-use Auth;
-use Session;
-use DB;
-use PDF;
-use Mail;
+use App\CouponUsage;
+use App\Http\Controllers\AffiliateController;
+use App\Http\Controllers\ClubPointController;
+use App\Http\Controllers\OTPVerificationController;
 use App\Mail\InvoiceEmailManager;
+use App\Order;
+use App\OrderDetail;
+use App\OtpConfiguration;
+use App\Product;
+use App\User;
+use Auth;
 use CoreComponentRepository;
+use DB;
+use Illuminate\Http\Request;
+use Mail;
+use PDF;
+use Session;
 
 class OrderController extends Controller
 {
@@ -35,13 +34,13 @@ class OrderController extends Controller
         $delivery_status = null;
         $sort_search = null;
         $orders = DB::table('orders')
-                    ->orderBy('code', 'desc')
-                    ->join('order_details', 'orders.id', '=', 'order_details.order_id')
-                    ->where('order_details.seller_id', Auth::user()->id)
-                    ->select('orders.id')
-                    ->distinct();
+            ->orderBy('code', 'desc')
+            ->join('order_details', 'orders.id', '=', 'order_details.order_id')
+            ->where('order_details.seller_id', Auth::user()->id)
+            ->select('orders.id')
+            ->distinct();
 
-        if ($request->payment_status != null){
+        if ($request->payment_status != null) {
             $orders = $orders->where('order_details.payment_status', $request->payment_status);
             $payment_status = $request->payment_status;
         }
@@ -49,9 +48,9 @@ class OrderController extends Controller
             $orders = $orders->where('order_details.delivery_status', $request->delivery_status);
             $delivery_status = $request->delivery_status;
         }
-        if ($request->has('search')){
+        if ($request->has('search')) {
             $sort_search = $request->search;
-            $orders = $orders->where('code', 'like', '%'.$sort_search.'%');
+            $orders = $orders->where('code', 'like', '%' . $sort_search . '%');
         }
 
         $orders = $orders->paginate(15);
@@ -62,7 +61,7 @@ class OrderController extends Controller
             $order->save();
         }
 
-        return view('frontend.seller.orders', compact('orders','payment_status','delivery_status', 'sort_search'));
+        return view('frontend.seller.orders', compact('orders', 'payment_status', 'delivery_status', 'sort_search'));
     }
 
     /**
@@ -79,13 +78,13 @@ class OrderController extends Controller
         $sort_search = null;
         $admin_user_id = User::where('user_type', 'admin')->first()->id;
         $orders = DB::table('orders')
-                    ->orderBy('code', 'desc')
-                    ->join('order_details', 'orders.id', '=', 'order_details.order_id')
-                    ->where('order_details.seller_id', $admin_user_id)
-                    ->select('orders.id')
-                    ->distinct();
+            ->orderBy('code', 'desc')
+            ->join('order_details', 'orders.id', '=', 'order_details.order_id')
+            ->where('order_details.seller_id', $admin_user_id)
+            ->select('orders.id')
+            ->distinct();
 
-        if ($request->payment_type != null){
+        if ($request->payment_type != null) {
             $orders = $orders->where('order_details.payment_status', $request->payment_type);
             $payment_status = $request->payment_type;
         }
@@ -93,12 +92,12 @@ class OrderController extends Controller
             $orders = $orders->where('order_details.delivery_status', $request->delivery_status);
             $delivery_status = $request->delivery_status;
         }
-        if ($request->has('search')){
+        if ($request->has('search')) {
             $sort_search = $request->search;
-            $orders = $orders->where('code', 'like', '%'.$sort_search.'%');
+            $orders = $orders->where('code', 'like', '%' . $sort_search . '%');
         }
         $orders = $orders->paginate(15);
-        return view('orders.index', compact('orders','payment_status','delivery_status', 'sort_search', 'admin_user_id'));
+        return view('orders.index', compact('orders', 'payment_status', 'delivery_status', 'sort_search', 'admin_user_id'));
     }
 
     /**
@@ -112,38 +111,36 @@ class OrderController extends Controller
 
         $sort_search = null;
         $orders = Order::orderBy('code', 'desc');
-        if ($request->has('search')){
+        if ($request->has('search')) {
             $sort_search = $request->search;
-            $orders = $orders->where('code', 'like', '%'.$sort_search.'%');
+            $orders = $orders->where('code', 'like', '%' . $sort_search . '%');
         }
         $orders = $orders->paginate(15);
         return view('sales.index', compact('orders', 'sort_search'));
     }
-
 
     public function order_index(Request $request)
     {
         if (Auth::user()->user_type == 'staff' && Auth::user()->staff->pick_up_point != null) {
             //$orders = Order::where('pickup_point_id', Auth::user()->staff->pick_up_point->id)->get();
             $orders = DB::table('orders')
-                        ->orderBy('code', 'desc')
-                        ->join('order_details', 'orders.id', '=', 'order_details.order_id')
-                        ->where('order_details.pickup_point_id', Auth::user()->staff->pick_up_point->id)
-                        ->select('orders.id')
-                        ->distinct()
-                        ->paginate(15);
+                ->orderBy('code', 'desc')
+                ->join('order_details', 'orders.id', '=', 'order_details.order_id')
+                ->where('order_details.pickup_point_id', Auth::user()->staff->pick_up_point->id)
+                ->select('orders.id')
+                ->distinct()
+                ->paginate(15);
 
             return view('pickup_point.orders.index', compact('orders'));
-        }
-        else{
+        } else {
             //$orders = Order::where('shipping_type', 'Pick-up Point')->get();
             $orders = DB::table('orders')
-                        ->orderBy('code', 'desc')
-                        ->join('order_details', 'orders.id', '=', 'order_details.order_id')
-                        ->where('order_details.shipping_type', 'pickup_point')
-                        ->select('orders.id')
-                        ->distinct()
-                        ->paginate(15);
+                ->orderBy('code', 'desc')
+                ->join('order_details', 'orders.id', '=', 'order_details.order_id')
+                ->where('order_details.shipping_type', 'pickup_point')
+                ->select('orders.id')
+                ->distinct()
+                ->paginate(15);
 
             return view('pickup_point.orders.index', compact('orders'));
         }
@@ -154,8 +151,7 @@ class OrderController extends Controller
         if (Auth::user()->user_type == 'staff') {
             $order = Order::findOrFail(decrypt($id));
             return view('pickup_point.orders.show', compact('order'));
-        }
-        else{
+        } else {
             $order = Order::findOrFail(decrypt($id));
             return view('pickup_point.orders.show', compact('order'));
         }
@@ -191,10 +187,9 @@ class OrderController extends Controller
     public function store(Request $request)
     {
         $order = new Order;
-        if(Auth::check()){
+        if (Auth::check()) {
             $order->user_id = Auth::user()->id;
-        }
-        else{
+        } else {
             $order->guest_id = mt_rand(100000, 999999);
         }
 
@@ -203,17 +198,13 @@ class OrderController extends Controller
         $order->payment_type = $request->payment_option;
         $order->delivery_viewed = '0';
         $order->payment_status_viewed = '0';
-        $order->code = date('Ymd-His').rand(10,99);
+        $order->code = date('Ymd-His') . rand(10, 99);
         $order->date = strtotime('now');
-
 
         $shipping_adress = json_decode($order->shipping_address);
         $city = $shipping_adress->city;
 
-
-
-
-        if($order->save()){
+        if ($order->save()) {
             $subtotal = 0;
             $tax = 0;
             $shipping = 0;
@@ -223,26 +214,24 @@ class OrderController extends Controller
             //Calculate Shipping Cost
             if (\App\BusinessSetting::where('type', 'shipping_type')->first()->value == 'flat_rate') {
                 $shipping = \App\BusinessSetting::where('type', 'flat_rate_shipping_cost')->first()->value;
-            }
-            elseif (\App\BusinessSetting::where('type', 'shipping_type')->first()->value == 'seller_wise_shipping') {
+            } elseif (\App\BusinessSetting::where('type', 'shipping_type')->first()->value == 'seller_wise_shipping') {
                 foreach (Session::get('cart') as $key => $cartItem) {
                     $product = \App\Product::find($cartItem['id']);
-                    if($product->added_by == 'admin'){
+                    if ($product->added_by == 'admin') {
                         array_push($admin_products, $cartItem['id']);
-                    }
-                    else{
+                    } else {
                         $product_ids = array();
-                        if(array_key_exists($product->user_id, $seller_products)){
+                        if (array_key_exists($product->user_id, $seller_products)) {
                             $product_ids = $seller_products[$product->user_id];
                         }
                         array_push($product_ids, $cartItem['id']);
                         $seller_products[$product->user_id] = $product_ids;
                     }
                 }
-                if(!empty($admin_products)){
+                if (!empty($admin_products)) {
                     $shipping = \App\BusinessSetting::where('type', 'shipping_cost_admin')->first()->value;
                 }
-                if(!empty($seller_products)){
+                if (!empty($seller_products)) {
                     foreach ($seller_products as $key => $seller_product) {
                         $shipping += \App\Shop::where('user_id', $key)->first()->shipping_cost;
                     }
@@ -252,26 +241,25 @@ class OrderController extends Controller
             //End Shipping Cost Calculation
 
             //Order Details Storing
-            foreach (Session::get('cart') as $key => $cartItem){
+            foreach (Session::get('cart') as $key => $cartItem) {
                 $product = Product::find($cartItem['id']);
 
-                $subtotal += $cartItem['price']*$cartItem['quantity'];
-                $tax += $cartItem['tax']*$cartItem['quantity'];
+                $subtotal += $cartItem['price'] * $cartItem['quantity'];
+                $tax += $cartItem['tax'] * $cartItem['quantity'];
 
                 $product_variation = $cartItem['variant'];
 
-                if($product_variation != null){
+                if ($product_variation != null) {
                     $product_stock = $product->stocks->where('variant', $product_variation)->first();
                     $product_stock->qty -= $cartItem['quantity'];
                     $product_stock->save();
-                }
-                else {
+                } else {
                     $product->current_stock -= $cartItem['quantity'];
                     $product->save();
                 }
 
                 $order_detail = new OrderDetail;
-                $order_detail->order_id  =$order->id;
+                $order_detail->order_id = $order->id;
                 $order_detail->seller_id = $product->user_id;
                 $order_detail->product_id = $product->id;
                 $order_detail->variation = $product_variation;
@@ -283,22 +271,18 @@ class OrderController extends Controller
                 //Dividing Shipping Costs
                 if ($cartItem['shipping_type'] == 'home_delivery') {
                     if (\App\BusinessSetting::where('type', 'shipping_type')->first()->value == 'flat_rate') {
-                        $order_detail->shipping_cost = $shipping/count(Session::get('cart'));
-                    }
-                    elseif (\App\BusinessSetting::where('type', 'shipping_type')->first()->value == 'seller_wise_shipping') {
-                        if($product->added_by == 'admin'){
-                            $order_detail->shipping_cost = \App\BusinessSetting::where('type', 'shipping_cost_admin')->first()->value/count($admin_products);
+                        $order_detail->shipping_cost = $shipping / count(Session::get('cart'));
+                    } elseif (\App\BusinessSetting::where('type', 'shipping_type')->first()->value == 'seller_wise_shipping') {
+                        if ($product->added_by == 'admin') {
+                            $order_detail->shipping_cost = \App\BusinessSetting::where('type', 'shipping_cost_admin')->first()->value / count($admin_products);
+                        } else {
+                            $order_detail->shipping_cost = \App\Shop::where('user_id', $product->user_id)->first()->shipping_cost / count($seller_products[$product->user_id]);
                         }
-                        else {
-                            $order_detail->shipping_cost = \App\Shop::where('user_id', $product->user_id)->first()->shipping_cost/count($seller_products[$product->user_id]);
-                        }
-                    }
-                    else{
+                    } else {
                         $order_detail->shipping_cost = \App\Product::find($cartItem['id'])->shipping_cost;
                         $shipping += \App\Product::find($cartItem['id'])->shipping_cost;
                     }
-                }
-                else{
+                } else {
                     $order_detail->shipping_cost = 0;
                     $order_detail->pickup_point_id = $cartItem['pickup_point'];
                 }
@@ -311,16 +295,16 @@ class OrderController extends Controller
                 $product->save();
             }
 
-            if($subtotal + $tax < 1000){
+            if ($subtotal + $tax < 500) {
                 $shipping_cost = $city == strtolower('casablanca') || $city == 'الدار البيضاء' || $city == 'الدارالبيضاء' ? '0' : $order->shipping_cost;
 
-            }else{
+            } else {
                 $shipping_cost = 0;
             }
 
             $order->grand_total = $subtotal + $tax + $shipping_cost;
-            
-            if(Session::has('coupon_discount')){
+
+            if (Session::has('coupon_discount')) {
                 $order->grand_total -= Session::get('coupon_discount');
                 $order->coupon_discount = Session::get('coupon_discount');
 
@@ -334,20 +318,20 @@ class OrderController extends Controller
 
             //stores the pdf for invoice
             $pdf = PDF::setOptions([
-                            'isHtml5ParserEnabled' => true, 'isRemoteEnabled' => true,
-                            'logOutputFile' => storage_path('logs/log.htm'),
-                            'tempDir' => storage_path('logs/')
-                        ])->loadView('invoices.customer_invoice', compact('order'));
+                'isHtml5ParserEnabled' => true, 'isRemoteEnabled' => true,
+                'logOutputFile' => storage_path('logs/log.htm'),
+                'tempDir' => storage_path('logs/'),
+            ])->loadView('invoices.customer_invoice', compact('order'));
             $output = $pdf->output();
-    		 file_put_contents('public/invoices/'.'Order#'.$order->code.'.pdf', $output);
+            file_put_contents('public/invoices/' . 'Order#' . $order->code . '.pdf', $output);
 
             $array['view'] = 'emails.invoice';
-            $array['subject'] = 'Order Placed - '.$order->code;
-            $array['from'] = env('MAIL_USERNAME');
+            $array['subject'] = 'Order Placed - ' . $order->code;
+            $array['from'] = env('MAIL_FROM_ADDRESS');
             $array['content'] = 'Hi. A new order has been placed. Please check the attached invoice.';
-            $array['file'] = 'public/invoices/Order#'.$order->code.'.pdf';
-            $array['file_name'] = 'Order#'.$order->code.'.pdf';
-            foreach($seller_products as $key => $seller_product){
+            $array['file'] = 'public/invoices/Order#' . $order->code . '.pdf';
+            $array['file_name'] = 'Order#' . $order->code . '.pdf';
+            foreach ($seller_products as $key => $seller_product) {
                 try {
                     Mail::to(\App\User::find($key)->email)->queue(new InvoiceEmailManager($array));
                 } catch (\Exception $e) {
@@ -355,8 +339,7 @@ class OrderController extends Controller
                 }
             }
 
-
-            if (\App\Addon::where('unique_identifier', 'otp_system')->first() != null && \App\Addon::where('unique_identifier', 'otp_system')->first()->activated && \App\OtpConfiguration::where('type', 'otp_for_order')->first()->value){
+            if (\App\Addon::where('unique_identifier', 'otp_system')->first() != null && \App\Addon::where('unique_identifier', 'otp_system')->first()->activated && \App\OtpConfiguration::where('type', 'otp_for_order')->first()->value) {
                 try {
                     $otpController = new OTPVerificationController;
                     $otpController->send_order_code($order);
@@ -366,7 +349,7 @@ class OrderController extends Controller
             }
 
             //sends email to customer with the invoice pdf attached
-            if(env('MAIL_USERNAME') != null){
+            if (env('MAIL_FROM_ADDRESS') != null) {
 
                 try {
                     $email = $request->session()->get('shipping_info')['email'];
@@ -383,7 +366,7 @@ class OrderController extends Controller
             $request->session()->put('order_id', $order->id);
         }
     }
-
+MAIL_FROM_ADDRESS
     /**
      * Display the specified resource.
      *
@@ -430,14 +413,13 @@ class OrderController extends Controller
     public function destroy($id)
     {
         $order = Order::findOrFail($id);
-        if($order != null){
-            foreach($order->orderDetails as $key => $orderDetail){
+        if ($order != null) {
+            foreach ($order->orderDetails as $key => $orderDetail) {
                 $orderDetail->delete();
             }
             $order->delete();
             flash('Order has been deleted successfully')->success();
-        }
-        else{
+        } else {
             flash('Something went wrong')->error();
         }
         return back();
@@ -456,20 +438,19 @@ class OrderController extends Controller
         $order = Order::findOrFail($request->order_id);
         $order->delivery_viewed = '0';
         $order->save();
-        if(Auth::user()->user_type == 'admin' || Auth::user()->user_type == 'seller'){
-            foreach($order->orderDetails->where('seller_id', Auth::user()->id) as $key => $orderDetail){
+        if (Auth::user()->user_type == 'admin' || Auth::user()->user_type == 'seller') {
+            foreach ($order->orderDetails->where('seller_id', Auth::user()->id) as $key => $orderDetail) {
                 $orderDetail->delivery_status = $request->status;
                 $orderDetail->save();
             }
-        }
-        else{
-            foreach($order->orderDetails->where('seller_id', \App\User::where('user_type', 'admin')->first()->id) as $key => $orderDetail){
+        } else {
+            foreach ($order->orderDetails->where('seller_id', \App\User::where('user_type', 'admin')->first()->id) as $key => $orderDetail) {
                 $orderDetail->delivery_status = $request->status;
                 $orderDetail->save();
             }
         }
 
-        if (\App\Addon::where('unique_identifier', 'otp_system')->first() != null && \App\Addon::where('unique_identifier', 'otp_system')->first()->activated && \App\OtpConfiguration::where('type', 'otp_for_delivery_status')->first()->value){
+        if (\App\Addon::where('unique_identifier', 'otp_system')->first() != null && \App\Addon::where('unique_identifier', 'otp_system')->first()->activated && \App\OtpConfiguration::where('type', 'otp_for_delivery_status')->first()->value) {
             try {
                 $otpController = new OTPVerificationController;
                 $otpController->send_delivery_status($order);
@@ -486,78 +467,73 @@ class OrderController extends Controller
         $order->payment_status_viewed = '0';
         $order->save();
 
-        if(Auth::user()->user_type == 'admin' || Auth::user()->user_type == 'seller'){
-            foreach($order->orderDetails->where('seller_id', Auth::user()->id) as $key => $orderDetail){
+        if (Auth::user()->user_type == 'admin' || Auth::user()->user_type == 'seller') {
+            foreach ($order->orderDetails->where('seller_id', Auth::user()->id) as $key => $orderDetail) {
                 $orderDetail->payment_status = $request->status;
                 $orderDetail->save();
             }
-        }
-        else{
-            foreach($order->orderDetails->where('seller_id', \App\User::where('user_type', 'admin')->first()->id) as $key => $orderDetail){
+        } else {
+            foreach ($order->orderDetails->where('seller_id', \App\User::where('user_type', 'admin')->first()->id) as $key => $orderDetail) {
                 $orderDetail->payment_status = $request->status;
                 $orderDetail->save();
             }
         }
 
         $status = 'paid';
-        foreach($order->orderDetails as $key => $orderDetail){
-            if($orderDetail->payment_status != 'paid'){
+        foreach ($order->orderDetails as $key => $orderDetail) {
+            if ($orderDetail->payment_status != 'paid') {
                 $status = 'unpaid';
             }
         }
         $order->payment_status = $status;
         $order->save();
 
-
-        if($order->payment_status == 'paid' && $order->commission_calculated == 0){
-            if(\App\Addon::where('unique_identifier', 'seller_subscription')->first() == null || !\App\Addon::where('unique_identifier', 'seller_subscription')->first()->activated){
+        if ($order->payment_status == 'paid' && $order->commission_calculated == 0) {
+            if (\App\Addon::where('unique_identifier', 'seller_subscription')->first() == null || !\App\Addon::where('unique_identifier', 'seller_subscription')->first()->activated) {
                 if ($order->payment_type == 'cash_on_delivery') {
                     if (BusinessSetting::where('type', 'category_wise_commission')->first()->value != 1) {
                         $commission_percentage = BusinessSetting::where('type', 'vendor_commission')->first()->value;
                         foreach ($order->orderDetails as $key => $orderDetail) {
                             $orderDetail->payment_status = 'paid';
                             $orderDetail->save();
-                            if($orderDetail->product->user->user_type == 'seller'){
+                            if ($orderDetail->product->user->user_type == 'seller') {
                                 $seller = $orderDetail->product->user->seller;
-                                $seller->admin_to_pay = $seller->admin_to_pay - ($orderDetail->price*$commission_percentage)/100;
+                                $seller->admin_to_pay = $seller->admin_to_pay - ($orderDetail->price * $commission_percentage) / 100;
                                 $seller->save();
                             }
                         }
-                    }
-                    else{
+                    } else {
                         foreach ($order->orderDetails as $key => $orderDetail) {
                             $orderDetail->payment_status = 'paid';
                             $orderDetail->save();
-                            if($orderDetail->product->user->user_type == 'seller'){
+                            if ($orderDetail->product->user->user_type == 'seller') {
                                 $commission_percentage = $orderDetail->product->category->commision_rate;
                                 $seller = $orderDetail->product->user->seller;
-                                $seller->admin_to_pay = $seller->admin_to_pay - ($orderDetail->price*$commission_percentage)/100;
+                                $seller->admin_to_pay = $seller->admin_to_pay - ($orderDetail->price * $commission_percentage) / 100;
                                 $seller->save();
                             }
                         }
                     }
-                }
-                elseif($order->manual_payment) {
+                } elseif ($order->manual_payment) {
                     if (BusinessSetting::where('type', 'category_wise_commission')->first()->value != 1) {
                         $commission_percentage = BusinessSetting::where('type', 'vendor_commission')->first()->value;
                         foreach ($order->orderDetails as $key => $orderDetail) {
                             $orderDetail->payment_status = 'paid';
                             $orderDetail->save();
-                            if($orderDetail->product->user->user_type == 'seller'){
+                            if ($orderDetail->product->user->user_type == 'seller') {
                                 $seller = $orderDetail->product->user->seller;
-                                $seller->admin_to_pay = $seller->admin_to_pay + ($orderDetail->price*(100-$commission_percentage))/100;
+                                $seller->admin_to_pay = $seller->admin_to_pay + ($orderDetail->price * (100 - $commission_percentage)) / 100;
                                 $seller->save();
                             }
                         }
-                    }
-                    else{
+                    } else {
                         foreach ($order->orderDetails as $key => $orderDetail) {
                             $orderDetail->payment_status = 'paid';
                             $orderDetail->save();
-                            if($orderDetail->product->user->user_type == 'seller'){
+                            if ($orderDetail->product->user->user_type == 'seller') {
                                 $commission_percentage = $orderDetail->product->category->commision_rate;
                                 $seller = $orderDetail->product->user->seller;
-                                $seller->admin_to_pay = $seller->admin_to_pay + ($orderDetail->price*(100-$commission_percentage))/100;
+                                $seller->admin_to_pay = $seller->admin_to_pay + ($orderDetail->price * (100 - $commission_percentage)) / 100;
                                 $seller->save();
                             }
                         }
@@ -579,7 +555,7 @@ class OrderController extends Controller
             $order->save();
         }
 
-        if (\App\Addon::where('unique_identifier', 'otp_system')->first() != null && \App\Addon::where('unique_identifier', 'otp_system')->first()->activated && \App\OtpConfiguration::where('type', 'otp_for_paid_status')->first()->value){
+        if (\App\Addon::where('unique_identifier', 'otp_system')->first() != null && \App\Addon::where('unique_identifier', 'otp_system')->first()->activated && \App\OtpConfiguration::where('type', 'otp_for_paid_status')->first()->value) {
             try {
                 $otpController = new OTPVerificationController;
                 $otpController->send_payment_status($order);

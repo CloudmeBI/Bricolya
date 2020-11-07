@@ -5,7 +5,6 @@ namespace App\Mail;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
-use Illuminate\Contracts\Queue\ShouldQueue;
 
 class WelcomeMailForAdmin extends Mailable
 {
@@ -29,6 +28,6 @@ class WelcomeMailForAdmin extends Mailable
      */
     public function build()
     {
-        return $this->from(env('MAIL_USERNAME'))->subject('new supplier')->view('emails.welcome-admin')->with('data', $this->data);
+        return $this->from(env('MAIL_FROM_ADDRESS'))->subject('new supplier')->view('emails.welcome-admin')->with('data', $this->data);
     }
 }

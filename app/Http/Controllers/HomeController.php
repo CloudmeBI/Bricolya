@@ -106,6 +106,7 @@ class HomeController extends Controller
         $user->address = $request->address;
         $user->phone = $request->telephone;
         $user->password = bcrypt($request->password);
+        $user->email_verified_at = Carbon::now();
 //        $user->email_verified_at = Carbon::now();
 
 
@@ -117,9 +118,9 @@ class HomeController extends Controller
         $user->save();
 
         Mail::to($request->email)->send(new WelcomeMail($user));
-        Mail::to(env('MAIL_USERNAME'))->send(new WelcomeMailForAdmin($user));
+        // Mail::to(env('MAIL_FROM_ADDRESS'))->send(new WelcomeMailForAdmin($user));
 
-        $session = session()->flash('success','Inscruption reussie');
+        $session = session()->flash('success','Inscription reussie');
         return redirect()->route('supplier.login.get')->with($session);
     }
 
@@ -203,9 +204,9 @@ class HomeController extends Controller
 
         $user->save();
 
+        Mail::to($request->email)->send(new WelcomeMail($user));
 
-
-        $session = session()->flash('success','Inscruption reussie');
+        $session = session()->flash('success','Inscription reussie');
         return redirect()->back()->with($session);
     }
     public function cart_login(Request $request)
@@ -871,7 +872,7 @@ class HomeController extends Controller
         Mail::to($request->email)->send(new WelcomeMail($user));
 //        Mail::to(env('MAIL_USERNAME'))->send(new WelcomeMailForAdmin($user));
 
-        $session = session()->flash('success','Inscruption reussie');
+        $session = session()->flash('success','Inscription reussie');
         return redirect()->back()->with($session);
     }
 

@@ -30,6 +30,6 @@ class WelcomeMail extends Mailable
     public function build()
     {
 
-        return $this->from(env('MAIL_USERNAME'))->subject('Bienvenue sur Bricolya')->view('emails.welcome')->with('data', $this->data);
+        return $this->from(env('MAIL_FROM_ADDRESS'))->subject('Bienvenue sur Bricolya')->view('emails.welcome')->with('data', $this->data);
     }
 }

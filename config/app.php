@@ -55,7 +55,7 @@ return [
     |
     */
 
-    'url' => 'https://bricolia.dev.cloudme.cloud/public',
+    'url' => env('APP_URL'),
 
     /*
     |--------------------------------------------------------------------------
