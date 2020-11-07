@@ -311,19 +311,15 @@ class OrderController extends Controller
                 $product->save();
             }
 
-
             if($subtotal + $tax < 1000){
-
                 $shipping_cost = $city == strtolower('casablanca') || $city == 'الدار البيضاء' || $city == 'الدارالبيضاء' ? '0' : $order->shipping_cost;
 
-                dd($shipping_cost);
-
             }else{
-                $shippingCost = 0;
+                $shipping_cost = 0;
             }
 
-            $order->grand_total = $subtotal + $tax + $shippingCost;
-dd($shippingCost);
+            $order->grand_total = $subtotal + $tax + $shipping_cost;
+            
             if(Session::has('coupon_discount')){
                 $order->grand_total -= Session::get('coupon_discount');
                 $order->coupon_discount = Session::get('coupon_discount');

@@ -7,6 +7,8 @@
 /storage/framework/cache/*
 *.sql
 *.conf
+*.log
+*.pdf
 /vendor
 .env
 .env.backup
