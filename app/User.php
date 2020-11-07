@@ -115,7 +115,7 @@ class User extends Authenticatable implements MustVerifyEmail
     public function fidelityPoints()
     {
         $amount = $this->totalOrdersAmount();
-        $points = number_format($amount / 2, 2);
+        $points = $amount == 0 ? 0 : number_format($amount / 2, 2);
         return $points;
     }
 }
