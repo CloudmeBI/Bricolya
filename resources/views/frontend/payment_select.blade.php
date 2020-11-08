@@ -76,6 +76,7 @@
                                     </h3>
                                 </div>
                                 <div class="card-body text-center">
+                                    <div class="alert alert-info" style="display: none" id="notif-cin">Porter votre CIN</div>
                                     <div class="row">
                                         <div class="col-md-6 mx-auto">
                                             <div class="row">
@@ -251,5 +252,20 @@
             $(el).prop('disabled', true);
             $('#checkout-form').submit();
         }
+    </script>
+    <script type="text/javascript">
+        setInterval(()=>{
+            let form = document.querySelector("#checkout-form");
+            let serializeForm = function (form){
+                var obj = {};
+                var formData = new FormData(form);
+                for (var key of formData.keys()) {
+                    obj[key] = formData.get(key);
+                }
+                return obj;
+            };
+            let isCashOnDeliveryChosen = serializeForm(form).payment_option == "cash_on_delivery";
+            document.querySelector("#notif-cin").style.display = isCashOnDeliveryChosen ? 'block':'none';
+        },1e3);
     </script>
 @endsection
