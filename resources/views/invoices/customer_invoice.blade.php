@@ -1,7 +1,7 @@
 <html>
 <head>
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<title>Laravel</title>
+	<title>Commande - {{ $order->code }}</title>
 	<meta http-equiv="Content-Type" content="text/html;"/>
 	<meta charset="UTF-8">
 	<style media="all">
@@ -69,11 +69,12 @@
 		<table>
 			<tr>
 				<td>
-					@if($generalsetting->logo != null)
+					<img loading="lazy"  src="https://bricolya.com/public/frontend/images/bricolya-logo-new.png" height="40" style="display:inline-block;">
+					{{-- @if($generalsetting->logo != null)
 						<img loading="lazy"  src="{{ asset($generalsetting->logo) }}" height="40" style="display:inline-block;">
 					@else
-						<img loading="lazy"  src="{{ asset('frontend/images/logo/logo.png') }}" height="40" style="display:inline-block;">
-					@endif
+						<img loading="lazy"  src="{{ asset('frontend/images/bricolya-logo-new.png') }}" height="40" style="display:inline-block;">
+					@endif --}}
 				</td>
 				<td style="font-size: 2.5rem;" class="text-right strong">FACTURE</td>
 			</tr>
@@ -89,7 +90,7 @@
 			</tr>
 			<tr>
 				<td class="gry-color small">Courriel: {{ $generalsetting->email }}</td>
-				<td class="text-right small"><span class="gry-color small">?uméro de commande :</span> <span class="strong">{{ $order->code }}</span></td>
+				<td class="text-right small"><span class="gry-color small">Numéro de commande :</span> <span class="strong">{{ $order->code }}</span></td>
 			</tr>
 			<tr>
 				<td class="gry-color small">Téléphone: {{ $generalsetting->phone }}</td>

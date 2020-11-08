@@ -4,7 +4,7 @@
             <div class="product-gal sticky-top d-flex flex-row-reverse">
                 @if(is_array(json_decode($product->photos)) && count(json_decode($product->photos)) > 0)
                     <div class="product-gal-img">
-                        <img src="{{ asset('frontend/images/placeholder.jpg') }}" class="xzoom img-fluid lazyload"
+                        <img src="{{ asset($product->thumbnail_img) }}" class="xzoom img-fluid lazyload"
                              src="{{ asset('frontend/images/placeholder.jpg') }}"
                              data-src="{{ asset(json_decode($product->photos)[0]) }}"
                              xoriginal="{{ asset(json_decode($product->photos)[0]) }}"/>
@@ -13,7 +13,7 @@
                         <div class="xzoom-thumbs">
                             @foreach (json_decode($product->photos) as $key => $photo)
                                 <a href="{{ asset($photo) }}">
-                                    <img src="{{ asset('frontend/images/placeholder.jpg') }}"
+                                    <img src="{{ asset($photo) }}"
                                          class="xzoom-gallery lazyload"
                                          src="{{ asset('frontend/images/placeholder.jpg') }}" width="80"
                                          data-src="{{ asset($photo) }}"
@@ -140,7 +140,7 @@
                             @endforeach
                         @endif
 
-                        @if (count(json_decode($product->colors)) > 0)
+                        @if (is_array(json_decode($product->colors)) && count(json_decode($product->colors)) > 0)
                             <div class="row no-gutters">
                                 <div class="col-2">
                                     <div class="product-description-label mt-2">{{__('Color')}}:</div>

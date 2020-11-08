@@ -1,7 +1,7 @@
 <html>
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Laravel</title>
+    <title>Commande - {{ $order->code }}</title>
     <meta http-equiv="Content-Type" content="text/html;"/>
     <meta charset="UTF-8">
 	<style media="all">
@@ -70,17 +70,19 @@
 				<tr>
 					<td>
 						@if (Auth::user()->user_type == 'seller')
-							@if(Auth::user()->shop->logo != null)
+							<img loading="lazy"  src="https://bricolya.com/public/frontend/images/bricolya-logo-new.png" height="40" style="display:inline-block;">
+							{{-- @if(Auth::user()->shop->logo != null)
 								<img loading="lazy"  src="{{ asset(Auth::user()->shop->logo) }}" height="40" style="display:inline-block;">
 							@else
 								<img loading="lazy"  src="{{ asset('frontend/images/logo/logo.png') }}" height="40" style="display:inline-block;">
-							@endif
+							@endif --}}
 						@else
-							@if($generalsetting->logo != null)
+							<img loading="lazy"  src="https://bricolya.com/public/frontend/images/bricolya-logo-new.png" height="40" style="display:inline-block;">
+							{{-- @if($generalsetting->logo != null)
 								<img loading="lazy"  src="{{ asset($generalsetting->logo) }}" height="40" style="display:inline-block;">
 							@else
 								<img loading="lazy"  src="{{ asset('frontend/images/logo/logo.png') }}" height="40" style="display:inline-block;">
-							@endif
+							@endif --}}
 						@endif
 					</td>
 					<td style="font-size: 2.5rem;" class="text-right strong">INVOICE</td>

@@ -366,7 +366,7 @@ class OrderController extends Controller
             $request->session()->put('order_id', $order->id);
         }
     }
-MAIL_FROM_ADDRESS
+
     /**
      * Display the specified resource.
      *

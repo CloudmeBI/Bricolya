@@ -87,7 +87,7 @@
 
                                                                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="">
                                                                     <button onclick="show_purchase_history_details({{ $order->id }})" class="dropdown-item">{{__('Order Details')}}</button>
-                                                                    <a href="{{ route('customer.invoice.download', $order->id) }}" class="dropdown-item">{{__('Download Invoice')}}</a>
+                                                                    <a href="{{ route('customer.invoice.download', $order->id) }}" style=" display: block; width: 160px; font-size: .9rem; padding: 1rem; background: rgb(240,240,240);" class="dropdown-item">{{__('Download Invoice')}}</a>
                                                                 </div>
                                                             </div>
                                                         </td>
@@ -144,6 +144,16 @@
         $('#order_details').on('hidden.bs.modal', function () {
             location.reload();
         })
+    </script>
+    <script type="text/javascript">
+        let selectAll = el => [...document.querySelectorAll(el)];
+        selectAll("[data-toggle='dropdown']")
+            .forEach(btn => 
+                btn.addEventListener('click',function (){
+                    let display = this.nextElementSibling.style.display;
+                    this.nextElementSibling.style.display = display == 'block' ? 'none' : 'block';
+                })
+            );
     </script>
 
 @endsection

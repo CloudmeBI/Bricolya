@@ -9,6 +9,8 @@ RUN apk update \
   && docker-php-ext-install pdo pdo_mysql intl \
   && apk add --no-cache --repository http://dl-cdn.alpinelinux.org/alpine/edge/community/ --allow-untrusted gnu-libiconv
 
+RUN apk add --no-cache libpng libpng-dev && docker-php-ext-install gd && apk del libpng-dev
+
 ENV LD_PRELOAD /usr/lib/preloadable_libiconv.so php
 
 RUN chown -R www-data:www-data ./ \

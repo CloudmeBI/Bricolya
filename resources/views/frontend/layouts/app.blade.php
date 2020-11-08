@@ -93,7 +93,7 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
     <link type="text/css" href="https://bricolya.com/public/frontend/css/sweetalert2.min.css" rel="stylesheet">
-    <link type="text/css" href="https://bricolya.com/public/frontend/css/xzoom.css" rel="stylesheet" media="none" onload="if(media!='all')media='all'">
+    <link type="text/css" href="{{asset('frontend/css/xzoom.css')}}" rel="stylesheet" media="none" onload="if(media!='all')media='all'">
     <link rel="stylesheet" href="https://bricolya.com/public/css/custom-resp.css">
 
 
@@ -227,7 +227,7 @@
 <script src="https://bricolya.com/public/frontend/js/active-shop.js"></script>
 <!-- sweet alert -->
 <script src="https://bricolya.com/public/frontend/js/sweetalert2.min.js"></script>
-<script src="https://bricolya.com/public/frontend/js/xzoom.min.js"></script>
+<script src="{{ asset('frontend/js/xzoom.min.js') }}"></script>
 
 <script type="text/javascript">
     $(function () {
