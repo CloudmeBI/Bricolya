@@ -229,4 +229,13 @@ return [
         'PaytmWallet' => Anand\LaravelPaytmWallet\Facades\PaytmWallet::class,
     ],
 
+    'business_city' => 'casablanca',
+
+    'shipping_cost' => [
+        'currency' => 'MAD',
+        'same_city' => 25,
+        'oujda' => 45,
+        'outside_city' => 40,
+    ]
+
 ];

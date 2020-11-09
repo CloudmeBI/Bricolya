@@ -8417,10 +8417,10 @@ svg#bigTriangleColor {
 
 @media (min-width: 992px) {
   .dropdown-menu {
-    display: block;
+    /* display: block;
     opacity: 0;
     visibility: hidden;
-    z-index: 1;
+    z-index: 1; */
   }
 
   .dropdown--animated .dropdown-menu {

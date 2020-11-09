@@ -12,6 +12,7 @@
 */
 
 //demo
+Route::get('test',function(){return dd(session('cart'));});
 Route::get('ee',function(){return view('home');});
 Route::post('/cmi/sendData','CmiPaymentController@sendData')->name('cmi.sendData');
 Route::post('/cmi/okFail','CmiPaymentController@okFail')->name('cmi.okFail');

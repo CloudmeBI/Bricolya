@@ -42,12 +42,26 @@
                     $totalTTC = 0;
                     $tax = 0;
                     $shipping = 0;
-                    if (\App\BusinessSetting::where('type', 'shipping_type')->first()->value == 'flat_rate') {
-                        $shipping = \App\BusinessSetting::where('type', 'flat_rate_shipping_cost')->first()->value;
-                    }
+                    // if (\App\BusinessSetting::where('type', 'shipping_type')->first()->value == 'flat_rate') {
+                    //     $shipping = \App\BusinessSetting::where('type', 'flat_rate_shipping_cost')->first()->value;
+                    // }
+                    $order = \App\Order::findOrFail(Session::get('order_id'));
+                    $shipping = $order->shipping_cost;
 
                     $admin_products = array();
                     $seller_products = array();
+                @endphp
+                @php
+                    if (\App\BusinessSetting::where('type', 'shipping_type')->first()->value == 'seller_wise_shipping') {
+                        if(!empty($admin_products)){
+                            $shipping = \App\BusinessSetting::where('type', 'shipping_cost_admin')->first()->value;
+                        }
+                        if(!empty($seller_products)){
+                            foreach ($seller_products as $key => $seller_product) {
+                                $shipping += \App\Shop::where('user_id', $key)->first()->shipping_cost;
+                            }
+                        }
+                    }
                 @endphp
                 @foreach (Session::get('cart') as $key => $cartItem)
                     @php
@@ -65,7 +79,7 @@
                         }
                         $subtotal += $cartItem['price']*$cartItem['quantity'];
                         //$totalTTC += ($cartItem['price'] + (($cartItem['price']*$cartItem['tax'])/100)) *$cartItem['quantity'];
-                        $totalTTC +=  home_discounted_price_num($cartItem['id'],$cartItem['quantity'],null,null);
+                        $totalTTC +=  home_discounted_price_num($cartItem['id'],$cartItem['quantity'],null,$shipping);
                         $tax += $cartItem['tax']*$cartItem['quantity'];
                         if (\App\BusinessSetting::where('type', 'shipping_type')->first()->value == 'product_wise_shipping') {
                             $shipping += $cartItem['shipping'];
@@ -96,19 +110,13 @@
                             <span class="text-italic">{{ $product->tax }} {{ $product->tax_type == 'amount' ? 'DH' : '%' }}</span>
                         </td>
                     </tr>
+                    <tr class="cart-shipping">
+                        <th style="font-weight: 400;font-size: 14px;">Frais d'Expédition</th>
+                        <td class="text-right" style="font-weight: 400;font-size: 14px;">
+                            <span class="text-italic">{{ $shipping }}</span>
+                        </td>
+                    </tr>
                 @endforeach
-                @php
-                    if (\App\BusinessSetting::where('type', 'shipping_type')->first()->value == 'seller_wise_shipping') {
-                        if(!empty($admin_products)){
-                            $shipping = \App\BusinessSetting::where('type', 'shipping_cost_admin')->first()->value;
-                        }
-                        if(!empty($seller_products)){
-                            foreach ($seller_products as $key => $seller_product) {
-                                $shipping += \App\Shop::where('user_id', $key)->first()->shipping_cost;
-                            }
-                        }
-                    }
-                @endphp
             </tbody>
         </table>
 

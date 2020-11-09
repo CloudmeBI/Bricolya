@@ -175,7 +175,8 @@
 			<tr>
 				<th class="gry-color text-left">Frais d'expédition</th>
 				{{--			            <td class="currency">{{ single_price($order->shipping_cost)  }}</td>--}}
-				<td class="currency">@php echo $shipp = in_array(strtolower($shipping_address->city),['casablanca','casa']) ? 0 : 20  @endphp MAD</td>
+				{{-- <td class="currency">@php echo $shipp = in_array(strtolower($shipping_address->city),['casablanca','casa']) ? 0 : 20  @endphp MAD</td> --}}
+				<td class="currency">{{ $shipp = $order->shipping_cost }}</td>
 			</tr>
 			<tr class="border-bottom">
 			<th class="gry-color text-left">Total hors taxe</th>

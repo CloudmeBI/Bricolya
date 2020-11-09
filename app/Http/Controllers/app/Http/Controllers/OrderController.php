@@ -296,13 +296,14 @@ class OrderController extends Controller
             }
 
             if ($subtotal + $tax < 500) {
-                $shipping_cost = $city == strtolower('casablanca') || $city == 'الدار البيضاء' || $city == 'الدارالبيضاء' ? '0' : $order->shipping_cost;
-
+                // $shipping_cost = $city == strtolower('casablanca') || $city == 'الدار البيضاء' || $city == 'الدارالبيضاء' ? '0' : $order->shipping_cost;
+                $shipping_cost = $this->shippingCost($city);
             } else {
                 $shipping_cost = 0;
             }
 
             $order->grand_total = $subtotal + $tax + $shipping_cost;
+            $order->shipping_cost = $shipping_cost;
 
             if (Session::has('coupon_discount')) {
                 $order->grand_total -= Session::get('coupon_discount');
@@ -563,5 +564,18 @@ class OrderController extends Controller
             }
         }
         return 1;
+    }
+
+    static public function shippingCost($city)
+    {
+        $shippingCostConfig = config('app.shipping_cost');
+
+        if ($city == config('app.business_city'))
+            return $shippingCostConfig['same_city'];
+            
+        if ($city == 'oujda')
+            return $shippingCostConfig['oujda'];
+            
+        return $shippingCostConfig['outside_city'];
     }
 }

@@ -232,8 +232,9 @@ class CheckoutController extends Controller
         foreach (Session::get('cart') as $key => $cartItem){
             $subtotal += $cartItem['price']*$cartItem['quantity'];
             $tax += $cartItem['tax']*$cartItem['quantity'];
-            $shipping += $cartItem['shipping']*$cartItem['quantity'];
+            // $shipping += $cartItem['shipping']*$cartItem['quantity'];
         }
+        $shipping = OrderController::shippingCost($data['city']);
 
         $total = $subtotal + $tax + $shipping;
 
@@ -283,8 +284,12 @@ class CheckoutController extends Controller
             foreach (Session::get('cart') as $key => $cartItem){
                 $subtotal += $cartItem['price']*$cartItem['quantity'];
                 $tax += $cartItem['tax']*$cartItem['quantity'];
-                $shipping += $cartItem['shipping']*$cartItem['quantity'];
+                // $shipping += $cartItem['shipping']*$cartItem['quantity'];
             }
+            $order = Order::findOrFail(Session::get('order_id'));
+            $shipping_adress = json_decode($order->shipping_address);
+            $city = $shipping_adress->city;
+            $shipping = OrderController::shippingCost($city);
 
             $total = $subtotal + $tax + $shipping;
 
@@ -311,8 +316,12 @@ class CheckoutController extends Controller
         foreach (Session::get('cart') as $key => $cartItem){
             $subtotal += $cartItem['price']*$cartItem['quantity'];
             $tax += $cartItem['tax']*$cartItem['quantity'];
-            $shipping += $cartItem['shipping']*$cartItem['quantity'];
+            // $shipping += $cartItem['shipping']*$cartItem['quantity'];
         }
+        $order = Order::findOrFail(Session::get('order_id'));
+        $shipping_adress = json_decode($order->shipping_address);
+        $city = $shipping_adress->city;
+        $shipping = OrderController::shippingCost($city);
 
         $total = $subtotal + $tax + $shipping;
 
