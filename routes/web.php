@@ -248,6 +248,7 @@ Route::group(['middleware' => ['auth']], function(){
 
 	Route::get('invoice/customer/{order_id}', 'InvoiceController@customer_invoice_download')->name('customer.invoice.download');
 	Route::get('invoice/seller/{order_id}', 'InvoiceController@seller_invoice_download')->name('seller.invoice.download');
+	Route::get('invoice/delivery/{order_id}', 'InvoiceController@delivery_invoice_download')->name('delivery.invoice.download');
 
 	Route::resource('orders','OrderController');
 	Route::get('/orders/destroy/{id}', 'OrderController@destroy')->name('orders.destroy');
