@@ -25,7 +25,7 @@ class PaypalController extends Controller
         if(Session::has('payment_type')){
             if(BusinessSetting::where('type', 'paypal_sandbox')->first()->value == 1){
                 $mode = 'sandbox';
-                $endPoint = 'https://api.paypal.com';
+                $endPoint = 'https://api.sandbox.paypal.com';
             }
             else{
                 $mode = 'live';
@@ -96,8 +96,8 @@ class PaypalController extends Controller
     	$payment->setIntent('sale');
     	$payment->setPayer($payer);
     	$payment->setRedirectUrls($redirectUrls);
-    	$payment->setTransactions(array($transaction));
-    	$response = $payment->create($this->_apiContext);
+        $payment->setTransactions(array($transaction));
+        $response = $payment->create($this->_apiContext);
     	$redirectUrl = $response->links[1]->href;
 
     	return Redirect::to( $redirectUrl );
