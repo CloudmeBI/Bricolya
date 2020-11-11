@@ -9,6 +9,7 @@
         "anandsiddharth/laravel-paytm-wallet": "^1.0",
         "barryvdh/laravel-dompdf": "^0.8.2",
         "botman/botman": "^2.6",
+        "composer/package-versions-deprecated": "^1.11",
         "fideloper/proxy": "^4.0",
         "gabrielbull/ups-api": "^0.8.0",
         "guzzlehttp/guzzle": "^6.5",

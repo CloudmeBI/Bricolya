@@ -234,7 +234,7 @@ class CheckoutController extends Controller
             $tax += $cartItem['tax']*$cartItem['quantity'];
             // $shipping += $cartItem['shipping']*$cartItem['quantity'];
         }
-        $shipping = OrderController::shippingCost($data['city']);
+        $shipping = $this->shippingCost($data['city']);
 
         $total = $subtotal + $tax + $shipping;
 
@@ -242,7 +242,7 @@ class CheckoutController extends Controller
                 $total -= Session::get('coupon_discount');
         }
 
-        return view('frontend.delivery_info');
+        return view('frontend.delivery_info', [ '_shipping' => $shipping ]);
         // return view('frontend.payment_select', compact('total'));
     }
 
@@ -286,10 +286,8 @@ class CheckoutController extends Controller
                 $tax += $cartItem['tax']*$cartItem['quantity'];
                 // $shipping += $cartItem['shipping']*$cartItem['quantity'];
             }
-            $order = Order::findOrFail(Session::get('order_id'));
-            $shipping_adress = json_decode($order->shipping_address);
-            $city = $shipping_adress->city;
-            $shipping = OrderController::shippingCost($city);
+            $shipping = $this->shippingCost(session('shipping_info.city'));
+            $_shipping = $shipping;
 
             $total = $subtotal + $tax + $shipping;
 
@@ -299,7 +297,7 @@ class CheckoutController extends Controller
 
             //dd($total);
 
-            return view('frontend.payment_select', compact('total'));
+            return view('frontend.payment_select', compact('total', '_shipping'));
         }
         else {
 			//Your Cart was empty
@@ -321,7 +319,7 @@ class CheckoutController extends Controller
         $order = Order::findOrFail(Session::get('order_id'));
         $shipping_adress = json_decode($order->shipping_address);
         $city = $shipping_adress->city;
-        $shipping = OrderController::shippingCost($city);
+        $shipping = $this->shippingCost($city);
 
         $total = $subtotal + $tax + $shipping;
 
@@ -417,5 +415,18 @@ class CheckoutController extends Controller
     public function order_confirmed(){
         $order = Order::findOrFail(Session::get('order_id'));
         return view('frontend.order_confirmed', compact('order'));
+    }
+
+    static public function shippingCost($city)
+    {
+        $shippingCostConfig = config('app.shipping_cost');
+
+        if ($city == config('app.business_city'))
+            return $shippingCostConfig['same_city'];
+            
+        if ($city == 'oujda')
+            return $shippingCostConfig['oujda'];
+            
+        return $shippingCostConfig['outside_city'];
     }
 }

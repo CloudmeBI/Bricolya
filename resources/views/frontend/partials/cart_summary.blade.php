@@ -45,8 +45,8 @@
                     // if (\App\BusinessSetting::where('type', 'shipping_type')->first()->value == 'flat_rate') {
                     //     $shipping = \App\BusinessSetting::where('type', 'flat_rate_shipping_cost')->first()->value;
                     // }
-                    $order = \App\Order::findOrFail(Session::get('order_id'));
-                    $shipping = $order->shipping_cost;
+                    $order = \App\Order::find(Session::get('order_id')) || [];
+                    $shipping = $order->shipping_cost ?? null;
 
                     $admin_products = array();
                     $seller_products = array();
@@ -79,11 +79,11 @@
                         }
                         $subtotal += $cartItem['price']*$cartItem['quantity'];
                         //$totalTTC += ($cartItem['price'] + (($cartItem['price']*$cartItem['tax'])/100)) *$cartItem['quantity'];
-                        $totalTTC +=  home_discounted_price_num($cartItem['id'],$cartItem['quantity'],null,$shipping);
+                        $totalTTC +=  home_discounted_price_num($cartItem['id'],$cartItem['quantity'],null,$_shipping ?? $shipping);
                         $tax += $cartItem['tax']*$cartItem['quantity'];
-                        if (\App\BusinessSetting::where('type', 'shipping_type')->first()->value == 'product_wise_shipping') {
-                            $shipping += $cartItem['shipping'];
-                        }
+                        // if (\App\BusinessSetting::where('type', 'shipping_type')->first()->value == 'product_wise_shipping') {
+                        //     $shipping += $cartItem['shipping'];
+                        // }
                         $product_name_with_choice = $product->name;
                         if ($cartItem['variant'] != null) {
                             $product_name_with_choice = $product->name.' - '.$cartItem['variant'];
@@ -113,7 +113,11 @@
                     <tr class="cart-shipping">
                         <th style="font-weight: 400;font-size: 14px;">Frais d'Expédition</th>
                         <td class="text-right" style="font-weight: 400;font-size: 14px;">
-                            <span class="text-italic">{{ $shipping }}</span>
+                            @if (isset($_shipping) && $_shipping !== null)
+                            <span class="text-italic">{{ $_shipping }}</span>
+                            @else
+                            <span class="text-italic">Calculé après avoir choisi l'adresse</span>    
+                            @endif
                         </td>
                     </tr>
                 @endforeach
