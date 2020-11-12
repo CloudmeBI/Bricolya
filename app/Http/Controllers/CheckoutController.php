@@ -234,8 +234,8 @@ class CheckoutController extends Controller
             $tax += $cartItem['tax']*$cartItem['quantity'];
             // $shipping += $cartItem['shipping']*$cartItem['quantity'];
         }
-        $shipping = $this->shippingCost($data['city']);
 
+        $shipping = ($subtotal + $tax) < 500 ? $this->shippingCost($data['city']) : 0;
         $total = $subtotal + $tax + $shipping;
 
         if(Session::has('coupon_discount')){
@@ -286,10 +286,8 @@ class CheckoutController extends Controller
                 $tax += $cartItem['tax']*$cartItem['quantity'];
                 // $shipping += $cartItem['shipping']*$cartItem['quantity'];
             }
-            $shipping = $this->shippingCost(session('shipping_info.city'));
-            $_shipping = $shipping;
-
-            $total = $subtotal + $tax + $shipping;
+            $_shipping = ($subtotal + $tax) < 500 ? $this->shippingCost(session('shipping_info.city')) : 0;
+            $total = $subtotal + $tax + $_shipping;
 
             if(Session::has('coupon_discount')){
                     $total -= Session::get('coupon_discount');
