@@ -13,11 +13,12 @@
     @csrf
     <?php
 
-    $storeKey = "TEST1234";
+    $post = collect(request()->json())->toArray();
 
+    $storeKey = "Cloudme-123";
 
     $postParams = array();
-    foreach ($_POST as $key => $value){
+    foreach ($post as $key => $value){
         array_push($postParams, $key);
         echo "<input type=\"hidden\" name=\"" .$key ."\" value=\"" .trim($value)."\" /><br />";
     }
@@ -25,7 +26,7 @@
 
     $hashval = "";
     foreach ($postParams as $param){
-        $paramValue = trim($_POST[$param]);
+        $paramValue = trim($post[$param]);
         $escapedParamValue = str_replace("|", "\\|", str_replace("\\", "\\\\", $paramValue));
 
         $lowerParam = strtolower($param);

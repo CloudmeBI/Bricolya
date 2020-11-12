@@ -33,9 +33,7 @@ class CmiPaymentController extends Controller
 
     public function callback()
     {
-
-
-        $storeKey = "TEST1234";
+        $storeKey = "Cloudme-123";
 
 
         $postParams = array();
@@ -99,8 +97,8 @@ class CmiPaymentController extends Controller
         */
     }
 
-    public function okFail()
+    public function okFail(Request $request)
     {
-        dd("ok Fail");
+        dd($request);
     }
 }
