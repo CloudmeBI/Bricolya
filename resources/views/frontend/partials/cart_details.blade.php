@@ -76,7 +76,7 @@
 
                 <div class="row align-items-center pt-4">
                     <div class="col-6">
-                        <a href="{{ route('home') }}" class="link link--style-3">
+                        <a href="{{ route('all_products') }}" class="link link--style-3">
                             <i class="ion-android-arrow-back"></i>
                             {{__('Return to shop')}}
                         </a>
