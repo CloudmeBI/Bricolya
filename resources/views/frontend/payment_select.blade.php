@@ -76,7 +76,7 @@
                                     </h3>
                                 </div>
                                 <div class="card-body text-center">
-                                    <div class="alert alert-danger" style="display: none" id="notif-cin">Porter votre CIN</div>
+                                    <div class="alert alert-danger" style="display: none" id="notif-cin">Il est indispensable que vous ayez votre carte d'identité à la réception des marchandises.</div>
                                     <div class="row">
                                         <div class="col-md-6 mx-auto">
                                             <div class="row">

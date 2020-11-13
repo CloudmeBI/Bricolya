@@ -13,7 +13,7 @@
                 votre adress electronique et votre mot de passe.
             </p>
         </div>
-        @if($data['user_type'] == 'seller')
+        @if($data['user_type'] == 'customer')
         <div class="spaceline">
             <p> Utilisez les valeurs suivants lorsque vous etes invite a vous connecter: </p>
             <p> Courriel: {{ $data['email'] }}</p>
@@ -32,7 +32,7 @@
             </ul>
             <br>
             <p> Si vous avez des questions concernant votre compte ou toute autre question, n'hesitez pas a nous contacter a
-                I'adresse contact@bricolya.com ou par telephone au 05 22 450 077865872314</p>
+                I'adresse contact@bricolya.com ou par telephone au 05 22 450 854</p>
         </div>
         @endif
     </div>

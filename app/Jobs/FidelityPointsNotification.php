@@ -2,6 +2,7 @@
 
 namespace App\Jobs;
 
+use App\Mail\FidelityPointMail;
 use App\User;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -41,9 +42,10 @@ class FidelityPointsNotification implements ShouldQueue
 
     public function sendEmail($email, $points)
     {
-        Mail::raw("Points Accumulated : $points}", function ($message) use ($email) {
-            $message->to($email);
-        });
-        // id  referred_by  provider_id  user_type  name  email  email_verified_at  password  remember_token  avatar  avatar_original  address  country  city  postal_code  phone  balance  website  category_Specialty  catalogue  products_sold  activity_descrition  referral_code  customer_package_id  remaining_uploads  created_at  updated_at
+        // Mail::raw("Points Accumulated : $points", function ($message) use ($email) {
+        //     $message->to($email);
+        // });
+        $user = User::where('email', $email)->first();
+        Mail::to($user->email)->send(new FidelityPointMail($user, $points));
     }
 }
