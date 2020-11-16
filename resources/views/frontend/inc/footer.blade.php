@@ -63,7 +63,7 @@
         </div>
 
         <div class="m0 copyRight text-center">
-          <div class="mb15"><a>Déclaration du cookie</a> | <a href="{{asset('static_files/Politique_de_confidentialité-Bricolya.docx')}}" target="_blank" download>Politique de confidentialité</a>  | <a href="{{asset('static_files/Conditions_générales_de_vente-Bricolya.docx')}}" target="_blank" download>Conditions générales</a></div>
+          <div class="mb15"><a>Déclaration du cookie</a> | <a href="{{asset('static_files/Politique_de_confidentialite-Bricolya.pdf')}}" target="_blank" download>Politique de confidentialité</a>  | <a href="{{asset('static_files/Conditions_generales_de_vente-Bricolya.pdf')}}" target="_blank" download>Conditions générales</a></div>
           <div class="">Copyright &#169; <a href="{{url('/')}}">Bricolya</a>  2020 - By Cloudme International</div>
 
         </div>
