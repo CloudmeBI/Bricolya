@@ -781,11 +781,12 @@ class HomeController extends Controller
 
     public function flash_products(Request $request)
     {
-        $min_price = $request->min_price;
-        $max_price = $request->max_price;
-        $products = Product::where('featured',1)->where('published',1)->paginate(12);
-        $today_deal_products = Product::where('todays_deal',1)->where('published',1)->paginate(12);
-        return view('frontend.products.flash_products',compact('products','today_deal_products','min_price','max_price'));
+        // $min_price = $request->min_price;
+        // $max_price = $request->max_price;
+        // $products = Product::where('featured',1)->where('published',1)->paginate(12);
+        // $today_deal_products = Product::where('todays_deal',1)->where('published',1)->paginate(12);
+        // return view('frontend.products.flash_products',compact('products','today_deal_products','min_price','max_price'));
+        return view('frontend.products.flash_products_v2');
     }
 
     public function aboutus()

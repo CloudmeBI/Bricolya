@@ -674,3 +674,7 @@ strong.chat_time {
 	border: 20px solid;
 	border-color: #666 #666 transparent transparent;
 }
+
+.contentRowPadPage {
+  min-height: 250px;
+}
