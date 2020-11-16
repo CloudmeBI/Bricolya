@@ -13,11 +13,13 @@ class InvoiceController extends Controller
     public function customer_invoice_download($id)
     {
         $order = Order::findOrFail($id);
+        $city = ((array) json_decode($order->shipping_address))["city"];
+        $shipping = $this->shippingCost($city);
         $pdf = PDF::setOptions([
                         'isHtml5ParserEnabled' => true, 'isRemoteEnabled' => true,
                         'logOutputFile' => storage_path('logs/log.htm'),
                         'tempDir' => storage_path('logs/')
-                    ])->loadView('invoices.customer_invoice', compact('order'));
+                    ])->loadView('invoices.customer_invoice', compact('order', 'shipping'));
         return $pdf->download('order-'.$order->code.'.pdf');
     }
 
@@ -37,6 +39,8 @@ class InvoiceController extends Controller
     public function admin_invoice_download($id)
     {
         $order = Order::findOrFail($id);
+        $city = ((array) json_decode($order->shipping_address))["city"];
+        $shipping = $this->shippingCost($city);
         $pdf = PDF::setOptions([
                         'isHtml5ParserEnabled' => true, 'isRemoteEnabled' => true,
                         'logOutputFile' => storage_path('logs/log.htm'),
@@ -54,7 +58,20 @@ class InvoiceController extends Controller
                         'logOutputFile' => storage_path('logs/log.htm'),
                         'tempDir' => storage_path('logs/')
                     ])->loadView('invoices.delivery-invoice', compact('order'));
-        return $pdf->download('order-'.$order->code.'.pdf');
+        return $pdf->download('order-delivery-'.$order->code.'.pdf');
         // return view('invoices.delivery-invoice', compact('order'));
+    }
+
+    static public function shippingCost($city)
+    {
+        $shippingCostConfig = config('app.shipping_cost');
+
+        if ($city == config('app.business_city'))
+            return $shippingCostConfig['same_city'];
+            
+        if ($city == 'oujda')
+            return $shippingCostConfig['oujda'];
+            
+        return $shippingCostConfig['outside_city'];
     }
 }

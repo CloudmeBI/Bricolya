@@ -118,19 +118,19 @@
 		<table class="padding text-left small border-bottom">
 			<thead>
 			<tr class="gry-color" style="background: #eceff4;">
-				<th width="35%">Produit</th>
-				<th width="15%">Type de livraison</th>
-				<th width="15%">Prix unitaire</th>
-				<th width="15%">Remise</th>
-				<th width="10%">Qte</th>
-				<th width="10%">Taxe</th>
-				<th width="15%" class="text-right">Total</th>
+				<th width="40%">Produit</th>
+				<th width="20%">Type de livraison</th>
+				<th width="20%">Prix unitaire</th>
+				{{-- <th width="15%">Remise</th> --}}
+				<th width="20%">Qte</th>
+				{{-- <th width="10%">Taxe</th> --}}
+				{{-- <th width="15%" class="text-right">Total</th> --}}
 			</tr>
 			</thead>
 			<tbody class="strong">
 			@php
 				$tax = 0;
-                $totalTTC = 0;
+				$totalTTC = 0;
 
 			@endphp
 			@foreach ($order->orderDetails as $key => $orderDetail)
@@ -149,10 +149,10 @@
 							@endif
 						</td>
 						<td class="gry-color currency">{{ single_price($orderDetail->product->unit_price) }}</td>
-						<td class="gry-color currency">{{ $orderDetail->product->discount }} {{ $orderDetail->product->discount_type == 'amount' ? 'DH' : '%' }}</td>
+						{{-- <td class="gry-color currency">{{ $orderDetail->product->discount }} {{ $orderDetail->product->discount_type == 'amount' ? 'DH' : '%' }}</td> --}}
 						<td class="gry-color">{{ $orderDetail->quantity }}</td>
-						<td class="gry-color currency">{{ $orderDetail->product->tax }} {{ $orderDetail->product->tax_type == 'amount' ? 'DH' : '%' }}</td>
-						<td class="text-right currency">{{ home_discounted_price($orderDetail->product->id,$orderDetail->quantity,null,null) }}</td>
+						{{-- <td class="gry-color currency">{{ $orderDetail->product->tax }} {{ $orderDetail->product->tax_type == 'amount' ? 'DH' : '%' }}</td> --}}
+						{{-- <td class="text-right currency">{{ home_discounted_price($orderDetail->product->id,$orderDetail->quantity,null,null) }}</td> --}}
 					</tr>
 					@php
 						//$tax = $tax + $orderDetail->product->tax;
