@@ -36,9 +36,8 @@ class CheckoutController extends Controller
 
             $orderController = new OrderController();
             $orderController->store($request);
-             
+            
             $request->session()->put('payment_type', 'cart_payment');
-
 
             if($request->session()->get('order_id') != null){
                 if($request->payment_option == 'paypal'){
@@ -72,6 +71,10 @@ class CheckoutController extends Controller
                 elseif ($request->payment_option == 'paytm') {
                     $paytm = new PaytmController;
                     return $paytm->index();
+                }
+                elseif ($request->payment_option == 'cmi') {
+                    return (new CmiPaymentController)
+                        ->sendData($request, session("order_id"));
                 }
                 elseif ($request->payment_option == 'cash_on_delivery') {
                     $request->session()->put('cart', collect([]));
@@ -317,9 +320,9 @@ class CheckoutController extends Controller
         $order = Order::findOrFail(Session::get('order_id'));
         $shipping_adress = json_decode($order->shipping_address);
         $city = $shipping_adress->city;
-        $shipping = $this->shippingCost($city);
 
-        $total = $subtotal + $tax + $shipping;
+        $_shipping = ($subtotal + $tax) < 500 ? $this->shippingCost(session('shipping_info.city')) : 0;
+        $total = $subtotal + $tax + $_shipping;
 
         if(Session::has('coupon_discount')){
                 $total -= Session::get('coupon_discount');

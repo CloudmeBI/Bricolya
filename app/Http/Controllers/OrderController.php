@@ -295,15 +295,15 @@ class OrderController extends Controller
                 $product->save();
             }
 
-            if ($subtotal + $tax < 1000) {
-
-                $shipping_cost = $city == strtolower('casablanca') || $city == 'الدار البيضاء' || $city == 'الدارالبيضاء' ? '0' : '40';
-
+            if ($subtotal + $tax < 500) {
+                // $shipping_cost = $city == strtolower('casablanca') || $city == 'الدار البيضاء' || $city == 'الدارالبيضاء' ? '0' : $order->shipping_cost;
+                $shipping_cost = $this->shippingCost($city);
             } else {
                 $shipping_cost = 0;
             }
 
             $order->grand_total = $subtotal + $tax + $shipping_cost;
+            $order->shipping_cost = $shipping_cost;
 
             if (Session::has('coupon_discount')) {
                 $order->grand_total -= Session::get('coupon_discount');
@@ -318,11 +318,12 @@ class OrderController extends Controller
             $order->save();
 
             //stores the pdf for invoice
+            $shipping = $shipping_cost;
             $pdf = PDF::setOptions([
                 'isHtml5ParserEnabled' => true, 'isRemoteEnabled' => true,
                 'logOutputFile' => storage_path('logs/log.htm'),
                 'tempDir' => storage_path('logs/'),
-            ])->loadView('invoices.customer_invoice', compact('order'));
+            ])->loadView('invoices.customer_invoice', compact('order', 'shipping'));
             $output = $pdf->output();
             file_put_contents('public/invoices/' . 'Order#' . $order->code . '.pdf', $output);
 
@@ -354,7 +355,7 @@ class OrderController extends Controller
 
                 try {
                     $email = $request->session()->get('shipping_info')['email'];
-//                    Mail::to($email)->send(new InvoiceEmailManager($array));
+                    //                    Mail::to($email)->send(new InvoiceEmailManager($array));
                     Mail::to($request->session()->get('shipping_info')['email'])->queue(new InvoiceEmailManager($array));
                     Mail::to(User::where('user_type', 'admin')->first()->email)->queue(new InvoiceEmailManager($array));
                 } catch (\Exception $e) {
@@ -370,7 +371,7 @@ class OrderController extends Controller
 
     /**
      * Display the specified resource.
-     *MAIL_FROM_ADDRESS
+     *
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
@@ -564,5 +565,18 @@ class OrderController extends Controller
             }
         }
         return 1;
+    }
+
+    static public function shippingCost($city)
+    {
+        $shippingCostConfig = config('app.shipping_cost');
+
+        if ($city == config('app.business_city'))
+            return $shippingCostConfig['same_city'];
+            
+        if ($city == 'oujda')
+            return $shippingCostConfig['oujda'];
+            
+        return $shippingCostConfig['outside_city'];
     }
 }

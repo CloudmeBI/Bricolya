@@ -80,6 +80,14 @@
                                     <div class="row">
                                         <div class="col-md-6 mx-auto">
                                             <div class="row">
+                                                <div class="col-6">
+                                                    <label class="payment_option mb-4" data-toggle="tooltip" data-title="CMI">
+                                                        <input type="radio" id="" name="payment_option" value="cmi" checked>
+                                                        <span>
+                                                            <img loading="lazy"  src="{{url('public/frontend/images/icons/cards/cmi.png')}}" class="img-fluid">
+                                                        </span>
+                                                    </label>
+                                                </div>
                                                 @if(\App\BusinessSetting::where('type', 'paypal_payment')->first()->value == 1)
                                                     <div class="col-6">
                                                         <label class="payment_option mb-4" data-toggle="tooltip" data-title="Paypal">

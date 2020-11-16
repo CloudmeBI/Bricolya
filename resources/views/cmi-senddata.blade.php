@@ -4,7 +4,8 @@
         <table>
             <tr>
                 <td align="center" colspan="2">
-                    <input type="submit" value="Complete Payment" />
+                    <img src="/public/frontend/images/icons/cards/cmi.png" style="width: 100px;height:auto;margin-bottom:1rem" alt="cmi">
+                    <input type="submit" value="Complétez Payment" style="display: block"/>
                 </td>
             </tr>
 

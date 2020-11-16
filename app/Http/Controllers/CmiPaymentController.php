@@ -131,9 +131,7 @@ class CmiPaymentController extends Controller
     {
         $order = Order::findOrFail($request->oid);
         $transaction_successfull = true;
-        if ( $transaction_successfull ) {
-            $order->payment_status = 'paid';
-            $order->save();
-        }
+        if ( $transaction_successfull )
+            return (new CheckoutController)->checkout_done($order->id, null);
     }
 }

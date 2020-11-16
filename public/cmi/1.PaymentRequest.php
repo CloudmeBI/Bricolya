@@ -40,8 +40,10 @@
 			<table>
 				<tr>
 
-					<td align="center" colspan="2"><input type="submit"
-						value="Complete Payment" /></td>
+					<td align="center" colspan="2">
+						<img src="/public/frontend/images/icons/cards/cmi.png" style="width: 100px;height:auto;" alt="cmi">
+						<input type="submit" value="Complétez Payment" />
+					</td>
 				</tr>
 
 			</table>

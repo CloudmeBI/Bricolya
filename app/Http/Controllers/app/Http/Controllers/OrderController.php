@@ -318,11 +318,12 @@ class OrderController extends Controller
             $order->save();
 
             //stores the pdf for invoice
+            $shipping = $shipping_cost;
             $pdf = PDF::setOptions([
                 'isHtml5ParserEnabled' => true, 'isRemoteEnabled' => true,
                 'logOutputFile' => storage_path('logs/log.htm'),
                 'tempDir' => storage_path('logs/'),
-            ])->loadView('invoices.customer_invoice', compact('order'));
+            ])->loadView('invoices.customer_invoice', compact('order', 'shipping'));
             $output = $pdf->output();
             file_put_contents('public/invoices/' . 'Order#' . $order->code . '.pdf', $output);
 
@@ -354,7 +355,7 @@ class OrderController extends Controller
 
                 try {
                     $email = $request->session()->get('shipping_info')['email'];
-//                    Mail::to($email)->send(new InvoiceEmailManager($array));
+                    //                    Mail::to($email)->send(new InvoiceEmailManager($array));
                     Mail::to($request->session()->get('shipping_info')['email'])->queue(new InvoiceEmailManager($array));
                     Mail::to(User::where('user_type', 'admin')->first()->email)->queue(new InvoiceEmailManager($array));
                 } catch (\Exception $e) {
