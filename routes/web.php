@@ -13,7 +13,7 @@
 
 //demo
 Route::get('ee',function(){return view('home');});
-Route::post('/cmi/sendData','CmiPaymentController@sendData')->name('cmi.sendData');
+Route::get('/cmi/sendData/{orderId}','CmiPaymentController@sendData')->name('cmi.sendData');
 Route::post('/cmi/okFail','CmiPaymentController@okFail')->name('cmi.okFail');
 Route::get('/cmi/okFail','CmiPaymentController@okFail')->name('cmi.okFailPost');
 Route::post('/cmi/callback','CmiPaymentController@callback')->name('cmi.callback');

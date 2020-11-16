@@ -1,58 +1,33 @@
-<html>
-<head>
-    <title>Generic Hash Request Handler</title>
-    <meta http-equiv="Content-Language" content="tr">
-    <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-9">
-    <meta http-equiv="Pragma" content="no-cache">
-    <meta http-equiv="Expires" content="now">
-</head>
+<center>
 
-<body onload="javascript:moveWindow()">
+    <form method="post" action="{{ url('/') . '/public/cmi/2.SendData.php' }}">
+        <table>
+            <tr>
+                <td align="center" colspan="2">
+                    <input type="submit" value="Complete Payment" />
+                </td>
+            </tr>
 
-<form name="pay_form" method="post" action="https://testpayment.cmi.co.ma/fim/est3Dgate">
-    @csrf
-    <?php
+        </table>
+            <input type="hidden" name="clientid" value="{{ $orgClientId }}"> 
+            <input type="hidden" name="amount" value="{{ $orgAmount }}">
+            <input type="hidden" name="okUrl" value="{{ $orgOkUrl }}">
+            <input type="hidden" name="failUrl" value="{{ $orgFailUrl }}">
+            <input type="hidden" name="TranType" value="{{ $orgTransactionType }}">
+            <input type="hidden" name="callbackUrl" value="{{ $orgCallbackUrl }}">
+            <input type="hidden" name="shopurl" value="{{ $shopurl }}">
+            <input type="hidden" name="currency" value="{{ $orgCurrency }}">
+            <input type="hidden" name="rnd" value="{{ $orgRnd }}">
+            <input type="hidden" name="storetype" value="3D_PAY_HOSTING">
+            <input type="hidden" name="hashAlgorithm" value="ver3">
+            <input type="hidden" name="lang" value="fr">
+            <input type="hidden" name="refreshtime" value="5">
+            <input type="hidden" name="BillToName" value="{{ $name }}">
+            <input type="hidden" name="email" value="{{ $email }}">
+            <input type="hidden" name="tel" value="{{ $tel }}">
+            <input type="hidden" name="encoding" value="UTF-8">
+            <input type="hidden" name="oid" value="{{ $order_id }}"> <!-- La valeur du paramètre oid doit être unique par transaction -->
+            
+    </form>
 
-    $post = collect(request()->json())->toArray();
-
-    $storeKey = "Cloudme-123";
-
-    $postParams = array();
-    foreach ($post as $key => $value){
-        array_push($postParams, $key);
-        echo "<input type=\"hidden\" name=\"" .$key ."\" value=\"" .trim($value)."\" /><br />";
-    }
-    natcasesort($postParams);
-
-    $hashval = "";
-    foreach ($postParams as $param){
-        $paramValue = trim($post[$param]);
-        $escapedParamValue = str_replace("|", "\\|", str_replace("\\", "\\\\", $paramValue));
-
-        $lowerParam = strtolower($param);
-        if($lowerParam != "hash" && $lowerParam != "encoding" )	{
-            $hashval = $hashval . $escapedParamValue . "|";
-        }
-    }
-
-
-    $escapedStoreKey = str_replace("|", "\\|", str_replace("\\", "\\\\", $storeKey));
-    $hashval = $hashval . $escapedStoreKey;
-
-    $calculatedHashValue = hash('sha512', $hashval);
-    $hash = base64_encode (pack('H*',$calculatedHashValue));
-
-    echo "<input type=\"hidden\" name=\"HASH\" value=\"" .$hash."\" /><br />";
-
-    ?>
-</form>
-
-<script type="text/javascript" language="javascript">
-    function moveWindow() {
-        document.pay_form.submit();
-    }
-</script>
-
-</body>
-
-</html>
+</center>

@@ -25,10 +25,40 @@ class CmiPaymentController extends Controller
 {
 
 
-    public function sendData(Request $request)
+    public function sendData(Request $request, $orderId)
     {
-
-        return view('cmi-senddata');
+        $order = Order::findOrFail($orderId);
+        $orgClientId  =  "600002088";
+  	    $orgAmount = $order->grand_total;
+  	    $orgOkUrl =  url("/") . "/public/cmi/Ok-Fail.php";
+  	    $orgFailUrl = url("/") . "/public/cmi/Ok-Fail.php";
+  	    $shopurl = url("/");
+  	    $orgTransactionType = "PreAuth";
+  	    $orgRnd =  microtime();
+  	    $orgCallbackUrl = url("/") . "/public/cmi/callback.php";
+        $orgCurrency = "504";
+        $name = $order->user->name;
+        $email = $order->user->email;
+        $tel = $order->user->phone;
+        $order_id = $orderId;
+        return view(
+            'cmi-senddata',
+            compact(
+                'orgClientId',
+                'orgAmount',
+                'orgOkUrl',
+                'orgFailUrl',
+                'shopurl',
+                'orgTransactionType',
+                'orgRnd',
+                'orgCallbackUrl',
+                'orgCurrency',
+                'name',
+                'email',
+                'tel',
+                'order_id'
+            )
+        );
     }
 
     public function callback()
@@ -99,6 +129,11 @@ class CmiPaymentController extends Controller
 
     public function okFail(Request $request)
     {
-        dd($request);
+        $order = Order::findOrFail($request->oid);
+        $transaction_successfull = true;
+        if ( $transaction_successfull ) {
+            $order->payment_status = 'paid';
+            $order->save();
+        }
     }
 }
