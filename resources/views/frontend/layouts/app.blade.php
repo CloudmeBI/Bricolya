@@ -83,7 +83,7 @@
     <!--Mechanic Styles-->
     <link rel="stylesheet" href="https://bricolya.com/public/frontend/css/style.css">
     <link rel="stylesheet" href="https://bricolya.com/public/frontend/css/responsive.css">
-    <link rel="stylesheet" href="https://bricolya.com/public/frontend/css/active-shop.css">
+    <link rel="stylesheet" href="{{url("public/frontend/css/active-shop.css")}}">
     <link rel="stylesheet" href="https://bricolya.com/public/frontend/css/main.css">
     <link rel="stylesheet" href="https://maxst.icons8.com/vue-static/landings/line-awesome/line-awesome/1.3.0/css/line-awesome.min.css">
 
