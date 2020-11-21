@@ -6,8 +6,22 @@ use Illuminate\Database\Eloquent\Model;
 
 class FlashDeal extends Model
 {
+    protected $casts = [
+        'conditions' => 'array',
+        'data' => 'array'
+    ];
+
+    protected $fillable = [
+        'id', 'title', 'start_date', 'end_date', 'product_id'
+    ];
+
     public function flash_deal_products()
     {
         return $this->hasMany(FlashDealProduct::class);
+    }
+
+    public function product()
+    {
+        return $this->belongsTo(Product::class);
     }
 }

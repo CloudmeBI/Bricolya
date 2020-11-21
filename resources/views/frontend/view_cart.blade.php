@@ -137,7 +137,8 @@
                                                     @endif
                                                 </td>
                                                 <td class="product-total">
-                                                    <span>{{ $product->unit_price *$cartItem['quantity']  }} HT</span>
+                                                    {{-- <span>{{ $product->unit_price *$cartItem['quantity']  }} HT</span> --}}
+                                                    <span>{{ $cartItem['price'] * $cartItem['quantity']  }} HT</span>
                                                 </td>
                                                 <td class="product-remove">
                                                     <a href="#" onclick="removeFromCartView(event, {{ $key }})" class="text-right pl-4">

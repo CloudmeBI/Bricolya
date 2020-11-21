@@ -79,7 +79,7 @@
                         }
                         $subtotal += $cartItem['price']*$cartItem['quantity'];
                         //$totalTTC += ($cartItem['price'] + (($cartItem['price']*$cartItem['tax'])/100)) *$cartItem['quantity'];
-                        $totalTTC +=  home_discounted_price_num($cartItem['id'],$cartItem['quantity'],null,$_shipping ?? $shipping);
+                        $totalTTC +=  home_discounted_price_num($cartItem['id'],$cartItem['quantity'],null, null, $cartItem);
                         $tax += $cartItem['tax']*$cartItem['quantity'];
                         // if (\App\BusinessSetting::where('type', 'shipping_type')->first()->value == 'product_wise_shipping') {
                         //     $shipping += $cartItem['shipping'];
@@ -95,7 +95,7 @@
                             <strong class="product-quantity">× {{ $cartItem['quantity'] }}</strong>
                         </td>
                         <td class="product-total text-right">
-                            <span class="pl-4">{{ $product['unit_price']}} MAD/HT</span>
+                            <span class="pl-4">{{ $cartItem['price']}} MAD/HT</span>
                         </td>
                     </tr>
                     <tr class="{{$product->discount > 0 ? '' : 'd-none'}}" >
@@ -108,16 +108,6 @@
                         <th style="font-weight: 400;font-size: 14px;">Impôt</th>
                         <td class="text-right" style="font-weight: 400;font-size: 14px;">
                             <span class="text-italic">{{ $product->tax }} {{ $product->tax_type == 'amount' ? 'DH' : '%' }}</span>
-                        </td>
-                    </tr>
-                    <tr class="cart-shipping">
-                        <th style="font-weight: 400;font-size: 14px;">Frais d'Expédition</th>
-                        <td class="text-right" style="font-weight: 400;font-size: 14px;">
-                            @if (isset($_shipping) && $_shipping !== null)
-                            <span class="text-italic">{{ $_shipping }}</span>
-                            @else
-                            <span class="text-italic">Calculé après avoir choisi l'adresse</span>    
-                            @endif
                         </td>
                     </tr>
                 @endforeach
@@ -162,11 +152,20 @@
                        }*/
                 @endphp
 
+                <tr class="cart-shipping">
+                    <th class="strong-600" style="font-weight: 400;font-size: 14px;">Frais d'Expédition</th>
+                    <td class="text-right" style="font-weight: 400;font-size: 14px;">
+                        @if (isset($_shipping) && $_shipping !== null)
+                        <span class="text-italic">{{ $_shipping }}</span>
+                        @else
+                        <span class="text-italic">Calculé après avoir choisi l'adresse</span>    
+                        @endif
+                    </td>
+                </tr>
                 <tr class="cart-total">
                     <th><span class="strong-600">Totale</span></th>
                     <td class="text-right">
-
-                        <strong><span>{{  $totalTTC  }} </span> TTC *</strong>
+                        <strong><span>{{  $totalTTC + (isset($_shipping) ? $_shipping : 0)  }} </span> TTC *</strong>
                     </td>
                 </tr>
             </tfoot>

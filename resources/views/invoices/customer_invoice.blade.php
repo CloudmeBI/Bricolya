@@ -151,11 +151,11 @@
 						<td class="gry-color currency">{{ $orderDetail->product->discount }} {{ $orderDetail->product->discount_type == 'amount' ? 'DH' : '%' }}</td>
 						<td class="gry-color">{{ $orderDetail->quantity }}</td>
 						<td class="gry-color currency">{{ $orderDetail->product->tax }} {{ $orderDetail->product->tax_type == 'amount' ? 'DH' : '%' }}</td>
-						<td class="text-right currency">{{ home_discounted_price($orderDetail->product->id,$orderDetail->quantity,null,null) }}</td>
+						<td class="text-right currency">{{ home_discounted_price_num($orderDetail->product->id,$orderDetail->quantity,null,null,collect(session('cart'))[collect(session('cart'))->search(function($cartItem)use($orderDetail){return $cartItem['id'] == $orderDetail->product->id;})]) }}</td>
 					</tr>
 					@php
 						//$tax = $tax + $orderDetail->product->tax;
-                        $totalTTC +=  home_discounted_price_num($orderDetail->product->id,$orderDetail->quantity,null,null);
+                        $totalTTC +=  home_discounted_price_num($orderDetail->product->id,$orderDetail->quantity,null,null,collect(session('cart'))[collect(session('cart'))->search(function($cartItem)use($orderDetail){return $cartItem['id'] == $orderDetail->product->id;})]);
 
 					@endphp
 				@endif
@@ -170,7 +170,7 @@
 			<tbody>
 			<tr>
 				<th class="gry-color text-left">Sous-total</th>
-				<td class="currency">{{ single_price($order->orderDetails->sum('price')) }}</td>
+				<td class="currency">{{ $totalTTC }}</td>
 			</tr>
 			<tr>
 				<th class="gry-color text-left">Frais d'expédition</th>
@@ -178,10 +178,10 @@
 				{{-- <td class="currency">@php echo $shipp = in_array(strtolower($shipping_address->city),['casablanca','casa']) ? 0 : 20  @endphp MAD</td> --}}
 				<td class="currency">{{ $shipping }}</td>
 			</tr>
-			<tr class="border-bottom">
-			<th class="gry-color text-left">Total hors taxe</th>
+			{{-- <tr class="border-bottom">
+				<th class="gry-color text-left">Total hors taxe</th>
 				<td class="currency">{{ single_price(($order->orderDetails->sum('price'))) }}</td>
-			</tr>
+			</tr> --}}
 			<tr>
 				<th class="text-left strong">Total TTC</th>
 				<td class="currency">{{ $totalTTC + $shipping }} MAD/TTC</td>

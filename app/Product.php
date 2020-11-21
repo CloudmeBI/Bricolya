@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\Models\FlashDeal;
 use Illuminate\Database\Eloquent\Model;
 
 class Product extends Model
@@ -44,5 +45,13 @@ class Product extends Model
 
     public function stocks(){
     return $this->hasMany(ProductStock::class);
+    }
+
+    public function flashDeals(){
+    return $this->hasMany(FlashDeal::class);
+    }
+
+    public function flashDealProduct(){
+    return $this->hasOne(FlashDealProduct::class);
     }
 }

@@ -413,21 +413,6 @@ if (! function_exists('home_discounted_price')) {
 
         $flash_deals = \App\FlashDeal::where('status', 1)->get();
         $inFlashDeal = false;
-        foreach ($flash_deals as $flash_deal) {
-            if ($flash_deal != null && $flash_deal->status == 1 && strtotime(date('d-m-Y')) >= $flash_deal->start_date && strtotime(date('d-m-Y')) <= $flash_deal->end_date && FlashDealProduct::where('flash_deal_id', $flash_deal->id)->where('product_id', $id)->first() != null) {
-                $flash_deal_product = FlashDealProduct::where('flash_deal_id', $flash_deal->id)->where('product_id', $id)->first();
-                if($flash_deal_product->discount_type == 'percent'){
-                    $lowest_price -= ($lowest_price*$flash_deal_product->discount)/100;
-                    $highest_price -= ($highest_price*$flash_deal_product->discount)/100;
-                }
-                elseif($flash_deal_product->discount_type == 'amount'){
-                    $lowest_price -= $flash_deal_product->discount;
-                    $highest_price -= $flash_deal_product->discount;
-                }
-                $inFlashDeal = true;
-                break;
-            }
-        }
 
         if (!$inFlashDeal) {
             if($product->discount_type == 'percent'){
@@ -483,12 +468,13 @@ if (! function_exists('home_discounted_price')) {
 }
 
 if (! function_exists('home_discounted_price_num')) {
-    function home_discounted_price_num($id,$qte = null,$coupon = null,$shipping = null)
+    function home_discounted_price_num($id,$qte = null,$coupon = null,$shipping = null, $cartItem = null)
     {
         $product = Product::findOrFail($id);
-        $lowest_price = $product->unit_price;
-        $highest_price = $product->unit_price;
-
+        // $lowest_price = $product->unit_price;
+        // $highest_price = $product->unit_price;
+        $lowest_price = isset($cartItem['price']) ? $cartItem['price'] : $product->unit_price;
+        $highest_price = isset($cartItem['price']) ? $cartItem['price'] : $product->unit_price;
         if ($product->variant_product) {
             foreach ($product->stocks as $key => $stock) {
                 if($lowest_price > $stock->price){
@@ -502,21 +488,6 @@ if (! function_exists('home_discounted_price_num')) {
 
         $flash_deals = \App\FlashDeal::where('status', 1)->get();
         $inFlashDeal = false;
-        foreach ($flash_deals as $flash_deal) {
-            if ($flash_deal != null && $flash_deal->status == 1 && strtotime(date('d-m-Y')) >= $flash_deal->start_date && strtotime(date('d-m-Y')) <= $flash_deal->end_date && FlashDealProduct::where('flash_deal_id', $flash_deal->id)->where('product_id', $id)->first() != null) {
-                $flash_deal_product = FlashDealProduct::where('flash_deal_id', $flash_deal->id)->where('product_id', $id)->first();
-                if($flash_deal_product->discount_type == 'percent'){
-                    $lowest_price -= ($lowest_price*$flash_deal_product->discount)/100;
-                    $highest_price -= ($highest_price*$flash_deal_product->discount)/100;
-                }
-                elseif($flash_deal_product->discount_type == 'amount'){
-                    $lowest_price -= $flash_deal_product->discount;
-                    $highest_price -= $flash_deal_product->discount;
-                }
-                $inFlashDeal = true;
-                break;
-            }
-        }
 
         if (!$inFlashDeal) {
             if($product->discount_type == 'percent'){
@@ -566,7 +537,7 @@ if (! function_exists('home_discounted_price_num')) {
         }
         else{
             return  ($lowest_price).' - '. ($highest_price);
-//            return format_price($lowest_price);
+            //            return format_price($lowest_price);
         }
     }
 }
@@ -591,21 +562,6 @@ if (! function_exists('home_discounted_price_ttc')) {
 
         $flash_deals = \App\FlashDeal::where('status', 1)->get();
         $inFlashDeal = false;
-        foreach ($flash_deals as $flash_deal) {
-            if ($flash_deal != null && $flash_deal->status == 1 && strtotime(date('d-m-Y')) >= $flash_deal->start_date && strtotime(date('d-m-Y')) <= $flash_deal->end_date && FlashDealProduct::where('flash_deal_id', $flash_deal->id)->where('product_id', $id)->first() != null) {
-                $flash_deal_product = FlashDealProduct::where('flash_deal_id', $flash_deal->id)->where('product_id', $id)->first();
-                if($flash_deal_product->discount_type == 'percent'){
-                    $lowest_price -= ($lowest_price*$flash_deal_product->discount)/100;
-                    $highest_price -= ($highest_price*$flash_deal_product->discount)/100;
-                }
-                elseif($flash_deal_product->discount_type == 'amount'){
-                    $lowest_price -= $flash_deal_product->discount;
-                    $highest_price -= $flash_deal_product->discount;
-                }
-                $inFlashDeal = true;
-                break;
-            }
-        }
 
         if (!$inFlashDeal) {
             if($product->discount_type == 'percent'){

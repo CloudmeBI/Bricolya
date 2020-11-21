@@ -383,9 +383,10 @@ class HomeController extends Controller
         return view('frontend.track_order');
     }
 
-    public function product(Request $request, $slug)
+    public function product(Request $request, $slug, $flash_deal_id = null)
     {
         $detailedProduct  = Product::where('slug', $slug)->first();
+        $flashDeal  = FlashDeal::find($flash_deal_id);
 
         if($detailedProduct!=null && $detailedProduct->published){
             updateCartSetup();
@@ -394,10 +395,10 @@ class HomeController extends Controller
                 Cookie::queue('referred_product_id', $detailedProduct->id, 43200);
             }
             if($detailedProduct->digital == 1){
-                return view('frontend.digital_product_details', compact('detailedProduct'));
+                return view('frontend.digital_product_details', compact('detailedProduct','flashDeal'));
             }
             else {
-                return view('frontend.product_details', compact('detailedProduct'));
+                return view('frontend.product_details', compact('detailedProduct','flashDeal'));
             }
             // return view('frontend.product_details', compact('detailedProduct'));
         }
@@ -646,19 +647,7 @@ class HomeController extends Controller
         //discount calculation
         $flash_deals = \App\FlashDeal::where('status', 1)->get();
         $inFlashDeal = false;
-        foreach ($flash_deals as $key => $flash_deal) {
-            if ($flash_deal != null && $flash_deal->status == 1 && strtotime(date('d-m-Y')) >= $flash_deal->start_date && strtotime(date('d-m-Y')) <= $flash_deal->end_date && \App\FlashDealProduct::where('flash_deal_id', $flash_deal->id)->where('product_id', $product->id)->first() != null) {
-                $flash_deal_product = \App\FlashDealProduct::where('flash_deal_id', $flash_deal->id)->where('product_id', $product->id)->first();
-                if($flash_deal_product->discount_type == 'percent'){
-                    $price -= ($price*$flash_deal_product->discount)/100;
-                }
-                elseif($flash_deal_product->discount_type == 'amount'){
-                    $price -= $flash_deal_product->discount;
-                }
-                $inFlashDeal = true;
-                break;
-            }
-        }
+        
         if (!$inFlashDeal) {
             if($product->discount_type == 'percent'){
                 $price -= ($price*$product->discount)/100;
@@ -781,12 +770,8 @@ class HomeController extends Controller
 
     public function flash_products(Request $request)
     {
-        // $min_price = $request->min_price;
-        // $max_price = $request->max_price;
-        // $products = Product::where('featured',1)->where('published',1)->paginate(12);
-        // $today_deal_products = Product::where('todays_deal',1)->where('published',1)->paginate(12);
-        // return view('frontend.products.flash_products',compact('products','today_deal_products','min_price','max_price'));
-        return view('frontend.products.flash_products_v2');
+        $flashdeals = FlashDeal::paginate(12);
+        return view('frontend.products.flash_products_v2', compact('flashdeals'));
     }
 
     public function aboutus()

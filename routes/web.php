@@ -12,7 +12,7 @@
 */
 
 //demo
-Route::get('ee',function(){return view('home');});
+Route::get('ee',function(){return dd(session('cart'));});
 Route::get('/cmi/sendData/{orderId}','CmiPaymentController@sendData')->name('cmi.sendData');
 Route::post('/cmi/okFail','CmiPaymentController@okFail')->name('cmi.okFail');
 Route::get('/cmi/okFail','CmiPaymentController@okFail')->name('cmi.okFailPost');
@@ -121,7 +121,7 @@ Route::get('/customer-product/{slug}', 'CustomerProductController@customer_produ
 Route::get('/customer-packages', 'HomeController@premium_package_index')->name('customer_packages_list_show');
 
 
-Route::get('/product/{slug}', 'HomeController@product')->name('product');
+Route::get('/product/{slug}/{flash_deal_id?}', 'HomeController@product')->name('product');
 Route::get('/products', 'HomeController@listing')->name('products');
 Route::get('/search?category={category_slug}', 'HomeController@search')->name('products.category');
 Route::get('/search?subcategory={subcategory_slug}', 'HomeController@search')->name('products.subcategory');

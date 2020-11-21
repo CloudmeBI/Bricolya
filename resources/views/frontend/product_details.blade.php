@@ -99,23 +99,37 @@
 
                         <br>
 
+                        <form id="option-choice-form">
+                        @csrf
                         <div class="row m0 qtyAtc">
-                            <div class="fleft quantity">
-                                <div class="fleft">Qté <span>=</span></div>
-                                <div class="input-group spinner">
-                                    <input type="text" name="quantity" class="form-control" value="1">
-                                    <div class="input-group-btn-vertical">
-                                        <button class="btn btn-default"><i class="fa fa-angle-up"></i></button>
-                                        <button class="btn btn-default"><i class="fa fa-angle-down"></i></button>
+                            <div class="fleft quantity d-flex">
+                                    <div class="fleft">Qté <span>=</span></div>
+                                    <div class="input-group spinner" style="margin-right: 1.5rem">
+                                        <input type="number" min="1" max="{{$qty}}" name="quantity" class="form-control" value="1">
+                                        <div class="input-group-btn-vertical">
+                                            <div class="btn btn-default"><i class="fa fa-angle-up"></i></div>
+                                            <div class="btn btn-default"><i class="fa fa-angle-down"></i></div>
+                                        </div>
                                     </div>
+                                    <button class="fleft btn btn-default" onclick="event.preventDefault();addToCart()"><img src="{{url("/")}}public/frontend/images/icons/cart3.png" alt=""> achat</button>
+                                    <input type="hidden" name="id" value="{{ $detailedProduct->id }}">
+                                    @if ($flashDeal)
+                                    <input type="hidden" name="flash_deal_id" value="{{ $flashDeal->id }}">
+                                    @endif
                                 </div>
                             </div>
-                            <form id="option-choice-form">
-                                @csrf
-                                <input type="hidden" name="id" value="{{ $detailedProduct->id }}">
-                                <button class="fleft btn btn-default" onclick="event.preventDefault();addToCart()"><img src="https://bricolia.dev.cloudme.cloud/public/frontend/images/icons/cart3.png" alt=""> achat</button>
-                            </form>
-                        </div>
+                        </form>
+                        
+                        @if ($flashDeal)
+                            <div class="row m0">
+                                <div class="alert alert-success" role="alert">
+                                    Si vous achetez {{ $flashDeal->conditions["quantity"] }} en quantité de ce produit, ces articles sont offerts gratuitement :
+                                    @foreach ($flashDeal->flash_deal_products as $flash_deal_product)
+                                    <br>- {{ $flash_deal_product->product->name }}
+                                    @endforeach
+                                </div>
+                            </div>
+                        @endif
                     </div>
                 </div>
             </div>
