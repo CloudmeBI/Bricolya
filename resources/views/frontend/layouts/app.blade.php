@@ -228,6 +228,17 @@
 <!-- sweet alert -->
 <script src="https://bricolya.com/public/frontend/js/sweetalert2.min.js"></script>
 <script src="{{ asset('frontend/js/xzoom.min.js') }}"></script>
+<script type="text/javascript" id="cookieinfo"
+	src="{{ asset('frontend/js/cookies.js') }}"
+	data-bg="#645862"
+	data-fg="#FFFFFF"
+	data-link="#F1D600"
+	data-cookie="CookieInfoScript"
+	data-text-align="left"
+    data-close-text="OK!"
+    data-linkmsg="Plus d'info"
+    data-message="Nous utilisons des cookies pour améliorer votre expérience. En poursuivant votre navigation sur ce site, vous acceptez notre utilisation des cookies.">
+</script>
 
 <script type="text/javascript">
     $(function () {

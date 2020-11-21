@@ -15,7 +15,7 @@
 Route::get('ee',function(){return dd(session('cart'));});
 Route::get('/cmi/sendData/{orderId}','CmiPaymentController@sendData')->name('cmi.sendData');
 Route::post('/cmi/okFail','CmiPaymentController@okFail')->name('cmi.okFail');
-Route::get('/cmi/okFail','CmiPaymentController@okFail')->name('cmi.okFailPost');
+// Route::get('/cmi/okFail','CmiPaymentController@okFail')->name('cmi.okFailPost');
 Route::post('/cmi/callback','CmiPaymentController@callback')->name('cmi.callback');
 
 
