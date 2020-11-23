@@ -15,7 +15,7 @@ return [
 
     'name' => env('APP_NAME', 'Laravel'),
 
-    'asset_url' => env('ASSET_URL', 'https://bricolia.dev.cloudme.cloud/'),
+    'asset_url' => env('ASSET_URL', env('APP_URL')),
 
 
     /*
