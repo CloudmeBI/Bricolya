@@ -8,11 +8,15 @@ class FlashDeal extends Model
 {
     protected $casts = [
         'conditions' => 'array',
-        'data' => 'array'
+        'data' => 'array',
     ];
 
     protected $fillable = [
-        'id', 'title', 'start_date', 'end_date', 'product_id'
+        'id', 'title', 'start_date', 'end_date', 'product_id',
+        'status',
+        'featured',
+        'conditions',
+        'data',
     ];
 
     public function flash_deal_products()
