@@ -182,7 +182,7 @@ class CheckoutController extends Controller
 
 		//Payment completed
         flash("Paiement terminé")->success();
-        return redirect()->route('order_confirmed');
+        return response()->redirectToRoute('order_confirmed');
     }
 
     public function get_shipping_info(Request $request)

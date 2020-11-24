@@ -76,7 +76,7 @@ class CartController extends Controller
 
         //discount calculation based on flash deal and regular discount
         //calculation of taxes
-        $flash_deals = \App\FlashDeal::where('status', 1)->get();
+        $flash_deals = FlashDeal::where('status', 1)->get();
         $inFlashDeal = false;
         
         if (!$inFlashDeal) {
@@ -149,7 +149,7 @@ class CartController extends Controller
 
     public function addPromotionProductsToCart(Request $request, $flashDealId, $mainProductQuantity)
     {
-        $flashDeal = FlashDeal::findOrFail($flashDealId);
+        $flashDeal = FlashDeal::find($flashDealId);
         if (!$flashDealId || !$this->conditionIsMet($request, $flashDeal, $mainProductQuantity)) {
             return;
         }

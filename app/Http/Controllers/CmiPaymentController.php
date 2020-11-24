@@ -112,6 +112,7 @@ class CmiPaymentController extends Controller
     public function okFail(Request $request)
     {
         $order = Order::findOrFail($request->oid);
+        \Session::put('order_id', $order->id);
         if ($request->Response == "Approved") {
             return (new CheckoutController)
                 ->checkout_done($order->id, null);
