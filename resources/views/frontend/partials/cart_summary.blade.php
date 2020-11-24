@@ -105,7 +105,7 @@
                         </td>
                     </tr>
                     <tr class="cart-shipping {{$product->tax > 0 ? '' : 'd-none'}}">
-                        <th style="font-weight: 400;font-size: 14px;">Impôt</th>
+                        <th style="font-weight: 400;font-size: 14px;">TVA</th>
                         <td class="text-right" style="font-weight: 400;font-size: 14px;">
                             <span class="text-italic">{{ $product->tax }} {{ $product->tax_type == 'amount' ? 'DH' : '%' }}</span>
                         </td>

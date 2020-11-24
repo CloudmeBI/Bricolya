@@ -13,8 +13,7 @@
                     <h3 class="contactHeading heading">Espace Fournisseur</h3>
                     <div class="row m0 excerpt">
                         <p>
-                            En Créant un compte auprès de notre site, vous serez en mesure de passer vos commandes
-                            plus rapidement, consulter et suivre vos commandes, et bien plus encore.
+                            Veuillez remplir le formulaire suivant, notre service commercial vous contactera pour une éventuelle collaboration.
                         </p>
                     </div>
                 </div>
