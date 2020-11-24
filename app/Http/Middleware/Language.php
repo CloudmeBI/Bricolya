@@ -25,7 +25,7 @@ class Language
             $locale = env('DEFAULT_LANGUAGE');
         }
         else{
-            $locale = 'en';
+            $locale = 'fr';
         }
 
         App::setLocale($locale);
