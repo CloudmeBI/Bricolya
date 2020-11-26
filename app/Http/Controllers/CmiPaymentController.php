@@ -21,7 +21,8 @@ class CmiPaymentController extends Controller
         $orgRnd = microtime();
         $orgCallbackUrl = url("/") . "/public/cmi/callback.php";
         $orgCurrency = "504";
-        $name = $order->user->name;
+        $name = $this->_sanitize($order->user->name);
+        $address = $this->_sanitize(((array) json_decode($order->shipping_address))["address"]);
         $email = $order->user->email;
         $tel = $order->user->phone;
         $order_id = $orderId;
@@ -39,10 +40,24 @@ class CmiPaymentController extends Controller
                 'orgCurrency',
                 'name',
                 'email',
+                'address',
                 'tel',
                 'order_id'
             )
         );
+    }
+
+    public function _sanitize(String $string)
+    {
+        $replacementMap = [
+            "é" => "e",
+            "ç" => "c",
+            "â" => "a",
+        ];
+        foreach ($replacementMap as $tobeReplacedLetter => $replacementLetter) {
+            $string = preg_replace("/$tobeReplacedLetter/", $replacementLetter, $string);
+        }
+        return $string;
     }
 
     public function callback()
@@ -117,7 +132,7 @@ class CmiPaymentController extends Controller
             return (new CheckoutController)
                 ->checkout_done($order->id, null);
         }
-        echo "Problem Payment CMI";
+        echo "Problème de paiement <br> <a href=\"/\">Acceuil</a>";
         die();
     }
 }

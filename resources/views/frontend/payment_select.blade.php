@@ -77,6 +77,12 @@
                             </div>
                             <div class="card-body text-center">
                                 <div class="alert alert-danger" style="display: none" id="notif-cin">Il est indispensable que vous ayez votre carte d'identité à la réception des marchandises.</div>
+                                <div class="alert alert-success text-left" style="display: none" id="notif-cmi">
+                                    C'est une option prépayée sécurisée et rapide. <br> <br>
+                                    1.Votre sécurité, notre priorité. Vous gardez le contrôle de chaque transaction et êtes protégé contre la fraude. <br> <br>
+                                    2. Le processus de remboursement est plus rapide. Le remboursement se fait très vite. La politique de retour / remboursement de Bricolya s'applique. <br> <br>
+                                    Afin de garantir le bon déroulement de votre paiement, merci de vous assurez que vous avez les fonds nécessaires sur votre carte.
+                                </div>
                                 <div class="row">
                                     <div class="col-md-6 mx-auto">
                                         <div class="row">
@@ -85,6 +91,7 @@
                                                     <input type="radio" id="" name="payment_option" value="cmi" checked>
                                                     <span>
                                                         <img loading="lazy" src="{{url('public/frontend/images/icons/cards/cmi.png')}}" class="img-fluid">
+                                                        <img loading="lazy" src="{{url('public/uploads/logo/V-M-C.png')}}" class="img-fluid" style="margin-top: 1rem">
                                                     </span>
                                                 </label>
                                             </div>
@@ -274,6 +281,9 @@
             };
             let isCashOnDeliveryChosen = serializeForm(form).payment_option == "cash_on_delivery";
             document.querySelector("#notif-cin").style.display = isCashOnDeliveryChosen ? 'block':'none';
+
+            let isCmiChosen = serializeForm(form).payment_option == "cmi";
+            document.querySelector("#notif-cmi").style.display = isCmiChosen ? 'block':'none';
         },1e3);
 </script>
 @endsection

@@ -19,6 +19,7 @@
             <input type="hidden" name="shopurl" value="{{ $shopurl }}">
             <input type="hidden" name="currency" value="{{ $orgCurrency }}">
             <input type="hidden" name="rnd" value="{{ $orgRnd }}">
+            <input type="hidden" name="BillToStreet1" value="{{ $address }}">
             <input type="hidden" name="storetype" value="3D_PAY_HOSTING">
             <input type="hidden" name="hashAlgorithm" value="ver3">
             <input type="hidden" name="lang" value="fr">

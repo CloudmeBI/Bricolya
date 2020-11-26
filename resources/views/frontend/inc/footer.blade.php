@@ -136,13 +136,13 @@
                         <div class="f-t col16 -pbm" style="margin-top: 2rem; margin-left: 1rem;">MODES DE PAIEMENT ET LIVRAISON</div>
                         <div class="col16 -phn -df -fw-w" style="margin-top: .5rem; margin-left: 1rem;">
                             <a title="Paiement à la livraison" class="ic-link -pas" style="margin-right: 1rem;">
-                                <img src="{{ asset('uploads/logo/cod.svg') }}" height="35" style="width: auto" alt="">
+                                <img src="{{ url('public/uploads/logo/cod.svg') }}" height="35" style="width: auto" alt="">
                             </a>
                             <a title="Visa" class="ic-link -pas" style="margin-right: 1rem;">
-                                <img src="{{ asset('uploads/logo/visa.svg') }}" height="40" style="width: auto" alt="">
+                                <img src="{{ url('public/uploads/logo/visa.svg') }}" height="40" style="width: auto" alt="">
                             </a>
                             <a title="Mastercard" class="ic-link -pas" style="margin-right: 1rem;">
-                                <img src="{{ asset('uploads/logo/mastercard.svg') }}" height="40" style="width: auto" alt="">
+                                <img src="{{ url('public/uploads/logo/mastercard.svg') }}" height="40" style="width: auto" alt="">
                             </a>
                         </div>
                     </div>

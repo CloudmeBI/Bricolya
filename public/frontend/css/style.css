@@ -4186,3 +4186,9 @@ div[slider] > input[type=range]::-ms-tooltip {
 .contentRowPadPage {
   min-height: 250px;
 }
+
+@media (min-width: 1920px) and (max-width: 2560px)  {
+  #slider .sliderCont .slides .text_lines {
+      top: 10%;
+  }
+}
