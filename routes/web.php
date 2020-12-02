@@ -146,6 +146,7 @@ Route::group(['middleware' => ['checkout']], function(){
 });
 
 Route::get('/checkout/order-confirmed', 'CheckoutController@order_confirmed')->name('order_confirmed');
+Route::get('/checkout/order-error', 'CheckoutController@order_error')->name('order_error');
 Route::post('/checkout/payment', 'CheckoutController@checkout')->name('payment.checkout');
 Route::post('/get_pick_ip_points', 'HomeController@get_pick_ip_points')->name('shipping_info.get_pick_ip_points');
 Route::get('/checkout/payment_select', 'CheckoutController@get_payment_info')->name('checkout.payment_info');

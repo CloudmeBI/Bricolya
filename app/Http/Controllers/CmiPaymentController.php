@@ -132,7 +132,7 @@ class CmiPaymentController extends Controller
             return (new CheckoutController)
                 ->checkout_done($order->id, null);
         }
-        echo "Problème de paiement <br> <a href=\"/\">Acceuil</a>";
-        die();
+        // return response()->redirectToRoute('order_confirmed');
+        return response()->redirectToRoute('order_error');
     }
 }

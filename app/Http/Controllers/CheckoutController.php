@@ -418,6 +418,11 @@ class CheckoutController extends Controller
         return view('frontend.order_confirmed', compact('order'));
     }
 
+    public function order_error(){
+        $order = Order::findOrFail(Session::get('order_id'));
+        return view('frontend.order_error', compact('order'));
+    }
+
     static public function shippingCost($city)
     {
         $shippingCostConfig = config('app.shipping_cost');
